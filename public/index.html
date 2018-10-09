@@ -3,11 +3,56 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Investment Simulator</title>
+    <title>Investment Simulator Node Capstone</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+    <section id="banner">
+        <header>
+            <h1 id="title">Investment Simulator</h1>
+        </header>
+    </section>
+
+    <div id="homePage">
+        <form class="createAccountForm">
+            <legend>Create Your Account</legend>
+            <fieldset>
+                <label for="createUsername">Email</label>
+                <input type="email" id="createUsername" placeholder="hamsterdance123@netscape.com" value="paul.thomp@gmail.com">
+                <label for="createPassword">Password</label>
+                <input type="password" id="createPassword" placeholder="Mypassword1" value="pass2018">
+            </fieldset>
+            <button type="submit" class="submit-button" id="createButton">Welcome!</button>
+        </form>
+        <p>Need to <span id="goToLogin">Sign-in</span>instead?</p>
+    </div>
+
+    <div id="loginPage">
+        <form class="login-form">
+            <legend>Login</legend>
+            <fieldset>
+                <label for="loginUsername">Email</label>
+                <input type="email" id="loginUsername" placeholder="OtisThePug@hotmail.com" value="paul.thomp@gmail.com">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Lt_Fish1902" value="pass2018">
+            </fieldset>
+            <button type="submit" class="submit-button" id="login-button">Sign In</button>
+        </form>
+        <p>Need to <span id="goToHomepage">create an account</span>instead?</p>
+    </div>
+
+    <div id="userDashboard"></div>
+
+    <div id="portfolioDashboard"></div>
+
+    <div id="newPortfolio"></div>
+
+    <div id="addInvestment"></div>
+
+    <script src="client.js"></script>
 
 </body>
 
