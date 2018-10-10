@@ -17,6 +17,7 @@
     </section>
 
     <div id="homePage">
+        <h2 class="tagLine">The best way to play the market without losing any money! Sign up below and start learning today.</h2>
         <form class="createAccountForm">
             <legend>Create Your Account</legend>
             <fieldset>
@@ -31,26 +32,57 @@
     </div>
 
     <div id="loginPage">
-        <form class="login-form">
+        <form class="loginForm">
             <legend>Login</legend>
             <fieldset>
                 <label for="loginUsername">Email</label>
-                <input type="email" id="loginUsername" placeholder="OtisThePug@hotmail.com" value="paul.thomp@gmail.com">
+                <input type="email" id="loginUsername" placeholder="hamsterdance123@netscape.com" value="paul.thomp@gmail.com">
                 <label for="loginPassword">Password</label>
-                <input type="password" id="loginPassword" placeholder="Lt_Fish1902" value="pass2018">
+                <input type="password" id="loginPassword" placeholder="Mypassword1" value="pass2018">
             </fieldset>
             <button type="submit" class="submit-button" id="login-button">Sign In</button>
         </form>
         <p>Need to <span id="goToHomepage">create an account</span>instead?</p>
     </div>
 
-    <div id="userDashboard"></div>
+    <div id="userDashboard">
+        <h2>Portfolios</h2>
+        <button id="goToNewPortfolio" style="background-image: "></button>
+        <section id="portfolioSection"></section>
+    </div>
 
-    <div id="portfolioDashboard"></div>
+    <div id="portfolioDashboard">
+        //need to add in name of portfolio here ++ same image below as above (plus sign in a circle or similar image)
+        <button id="searchInvestments" style="background-image: "></button>
+        <section id="portfolioStats"></section>
+        <hr class="breakLine">
+        <section id="portfolioCharts"></section>
+    </div>
 
-    <div id="newPortfolio"></div>
+    <div id="newPortfolio">
+        <form class="newPortfolioForm">
+            <legend>Create New Portfolio</legend>
+            <fieldset>
+                <label for="newPortfolioTitle">Title</label>
+                <input type="email" id="portfolioTitle" placeholder="Title">
+                <label for="newPortfolioDescription">Description</label>
+                <input type="text" id="newPortfolioDescription" placeholder="Enter description...">
+            </fieldset>
+            <button type="submit" id="createNewPortfolio">Create</button>
+        </form>
+    </div>
 
-    <div id="addInvestment"></div>
+    <div id="addInvestment">
+        <form class="newInvestmentForm">
+            <legend>Add New Investment</legend>
+            <fieldset>
+                <label for="newPortfolioTitle">Enter a stock symbol</label>
+                <input type="search" id="stockSearch" placeholder="AAPL">
+            </fieldset>
+            <button type="submit" class="submit-button" id="createNewPortfolio">Add Stock</button>
+        </form>
+        <div class="stockSearchResults"></div>
+    </div>
 
     <script src="client.js"></script>
 
