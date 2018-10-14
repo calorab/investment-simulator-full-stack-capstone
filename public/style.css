@@ -5,3 +5,43 @@
 .show {
     display: block;
 }
+
+html {
+    font-family: "Roboto", helvetica, sans-serif;
+}
+
+#banner {
+    background-color: #2F3133;
+    height: 100%;
+}
+
+.tagLine {
+    margin-top: 0px;
+    color: #CFD8DC;
+    font-size: 18px;
+    margin: auto;
+    padding-bottom: 50px;
+    padding-top: 20px;
+}
+
+#homePage {
+    background-color: #111111;
+    background-size: cover;
+    height: 100vh;
+    width: auto;
+}
+
+.createAccountForm {
+    background-color: #2F3133;
+    float: center;
+    width: 65%;
+    height: auto;
+    margin: auto;
+    padding: 20px;
+    border: 1px;
+    border-radius: 2px;
+}
+
+input {
+    background-color: darkgrey;
+}

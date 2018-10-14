@@ -1,15 +1,12 @@
-'use strict';
+hidePages();
+
+$('#homePage').show();
 
 //add/hide pages
 function hidePages() {
     $('.page').each((index, item) => {
-        $(item).removeClass('show');
+        $(item).hide();
     });
-}
-
-function showPages(name) {
-    hidePages();
-    $(name).addClass('show');
 }
 
 function createAccount() {
