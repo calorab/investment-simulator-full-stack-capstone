@@ -7,32 +7,48 @@
 }
 
 html {
-    font-family: "Roboto", helvetica, sans-serif;
+    font-family: 'Dosis', sans-serif;
+}
+
+body {
+    margin: 0;
 }
 
 #banner {
-    background-color: #2F3133;
+    background-color: #228A11;
     height: 100%;
+}
+
+h1 {
+    margin-top: 0;
+    padding-top: 15px;
+    padding-left: 10px;
+    color: white;
+    font-weight: 900;
 }
 
 .tagLine {
     margin-top: 0px;
-    color: #CFD8DC;
     font-size: 18px;
     margin: auto;
     padding-bottom: 50px;
     padding-top: 20px;
+    padding-left: 15px;
 }
 
 #homePage {
-    background-color: #111111;
+    background-color: whitesmoke;
     background-size: cover;
     height: 100vh;
     width: auto;
 }
 
-.createAccountForm {
-    background-color: #2F3133;
+.createAccountForm,
+.loginForm,
+.addPortfolioForm,
+.newInvestmentForm {
+    background-color: RGBA(40, 108, 161, 0.5);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     float: center;
     width: 65%;
     height: auto;
@@ -40,8 +56,4 @@ html {
     padding: 20px;
     border: 1px;
     border-radius: 2px;
-}
-
-input {
-    background-color: darkgrey;
 }
