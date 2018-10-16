@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -49,14 +50,39 @@
 
     <div class="page" id="userDashboard">
         <h2>Portfolios</h2>
+        <!--        add in image link -->
         <button id="goToNewPortfolio" style="background-image: "></button>
-        <section id="portfolioSection"></section>
+        <section id="portfolioSection">
+            <div class="p1">
+                <h3 class="portfolioTitle">Portfolio 1: Tech/Finance</h3>
+                <p class="portfolioDescription">Lorem ipsum dolor sit amet, ludus corrumpit ea duo. Te quem inermis aliquando nam, mundi fuisset mediocrem usu te. </p>
+            </div>
+            <div class="p2">
+                <h3 class="portfolioTitle">Portfolio 2: A/B test - Healthcare</h3>
+                <p class="portfolioDescription">Lorem ipsum dolor sit amet, ludus corrumpit ea duo. Te quem inermis aliquando nam, mundi fuisset mediocrem usu te. </p>
+            </div>
+            <div class="p3">
+                <h3 class="portfolioTitle">Portfolio 3: A/B test - Manufacturing</h3>
+                <p class="portfolioDescription">Lorem ipsum dolor sit amet, ludus corrumpit ea duo. Te quem inermis aliquando nam, mundi fuisset mediocrem usu te. </p>
+            </div>
+        </section>
     </div>
 
     <div class="page" id="portfolioDashboard">
         <!--        need to add in name of portfolio here ++ same image below as above (plus sign in a circle or similar image)-->
+        <h2 class="portfolioName">Portfolio 1</h2>
+        <p class="description">This portfolio is heavy technology and finance stocks. I'm testing this combination vs portfolio 2 which is heavy healthcare stock.</p>
         <button id="searchInvestments" style="background-image: "></button>
-        <section id="portfolioStats"></section>
+        <section id="portfolioStats">
+            <div id="container"></div>
+            <!--            <div id="container2"></div>-->
+            <p class="stocksOdd" id="stock1">AAPL <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 1.37%</p>
+            <p class="stocksEven" id="stock2">GOOG <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> 3.09%</p>
+            <p class="stocksOdd" id="stock3">BAC <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 5.3%</p>
+            <p class="stocksEven" id="stock4">TSLA <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> 0.09%</p>
+            <p class="stocksOdd" id="stock5">GS <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 4.7%</p>
+
+        </section>
         <hr class="breakLine">
         <section id="portfolioCharts"></section>
     </div>
@@ -86,6 +112,76 @@
         <div class="stockSearchResults"></div>
     </div>
 
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script>
+        Highcharts.chart('container', {
+
+            title: {
+                text: 'Dummy Chart, 1492-2100'
+            },
+
+            subtitle: {
+                text: 'Source: thesolarfoundation.com'
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Number of Employees'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+
+            plotOptions: {
+                series: {
+                    label: {
+                        connectorAllowed: false
+                    },
+                    pointStart: 2010
+                }
+            },
+
+            series: [{
+                name: 'Installation',
+                data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+            }, {
+                name: 'Manufacturing',
+                data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+            }, {
+                name: 'Sales & Distribution',
+                data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+            }, {
+                name: 'Project Development',
+                data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+            }, {
+                name: 'Other',
+                data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+            }],
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+
+        });
+
+    </script>
     <script src="client.js"></script>
 </body>
 

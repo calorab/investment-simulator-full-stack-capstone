@@ -1,6 +1,6 @@
 hidePages();
 
-$('#homePage').show();
+$('#userDashboard').show();
 
 //add/hide pages
 function hidePages() {

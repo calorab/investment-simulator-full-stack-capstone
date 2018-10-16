@@ -9,6 +9,9 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
 const express = require('express');
+const https = require('https');
+const http = require('http');
+
 // testing changes
 
 //Need to add these to package.json **
@@ -59,27 +62,27 @@ function closeServer() {
 }
 
 //Need to update this ---External API Call--- !!!
-var getFromNps = function (location) {
-    var emitter = new events.EventEmitter();
+let getFromBarchart = function (symbol) {
+    let emitter = new events.EventEmitter();
 
 
-    var options = {
-        host: 'developer.nps.gov',
-        path: '/api/v0/parks?parkCode=' + location,
+    let options = {
+        host: 'marketdata.websol.barchart.com',
+        path: "/getQuote.json?apikey=26a582762cf5be1605b1727afd385458&symbols=" + symbol,
         method: 'GET',
         headers: {
-            'Authorization': "EF26EC69-4C03-458F-9AD7-C33903A87CAB",
+            //            'Authorization': "EF26EC69-4C03-458F-9AD7-C33903A87CAB",
             'Content-Type': "application/json",
-            'Port': 443,
-            'User-Agent': 'Paw/3.1.2 (Macintosh; OS X/10.12.5) GCDHTTPRequest'
+            'Port': 443
+            //            'User-Agent': 'Paw/3.1.2 (Macintosh; OS X/10.12.5) GCDHTTPRequest'
         }
     };
 
     https.get(options, function (res) {
-        var body = '';
+        let body = '';
         res.on('data', function (chunk) {
             body += chunk;
-            var jsonFormattedResults = JSON.parse(body);
+            let jsonFormattedResults = JSON.parse(body);
             emitter.emit('end', jsonFormattedResults);
         });
 
@@ -89,6 +92,26 @@ var getFromNps = function (location) {
     });
     return emitter;
 };
+
+//local API endpont communicating with the external api endpoint
+//localhost:8080/barchart/AAPL
+app.get('/barchart/:symbol', function (req, res) {
+
+
+    //external api function call and response
+    let searchReq = getFromBarchart(req.params.symbol);
+
+    //get the data from the first api call
+    searchReq.on('end', function (item) {
+        res.json(item);
+    });
+
+    //error handling
+    searchReq.on('error', function (code) {
+        res.sendStatus(code);
+    });
+
+});
 
 //Did you update the above?? **
 
