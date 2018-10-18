@@ -1,38 +1,59 @@
 hidePages();
 
-$('#userDashboard').show();
+$('#homePage').show();
 
-//add/hide pages
+//hide pages
 function hidePages() {
     $('.page').each((index, item) => {
         $(item).hide();
     });
 }
-
+// ++ backend
 function createAccount() {
-    $('#createAccountButton').submit(() => {
+    $('#createAccountButton').submit(event => {
         alert('You have successfully created a new account');
-        showPages(userDashboard);
-
+        $('#userDashboard').show();
     });
 }
 
 function login() {
-    $('#loginButton').submit(() => {
-        showPages(userDashboard);
+    $('#loginButton').submit(event => {
+        $('#userDashboard').show();
     });
 }
 
 function addPortfolio() {
-    $('#createNewPortfolio').submit(() => {
+    $('#createNewPortfolio').submit(event => {
+        event.preventDefault;
+        let card = createTemplate();
+        displayCard('#portfolioSection', card);
         alert('You have successfully added a new portfolio');
-        showPages(userDasboard);
+        $('#userDashboard').show();
     });
 }
 
 function addInvestment() {
-    $('#addStock').submit(() => {
+    $('#addStock').submit(event => {
         alert('You have successfully added a new Stock');
-        showPages(portfolioDashboard);
+        $('#userDashboard').show();
     });
+}
+
+function goToPortfolio() {
+    $(this).parent().find('#portfolioDashboard').show();
+}
+
+function createTemplate() {
+    let title = $('.newTitle').val();
+    let description = $('.newDescription').val();
+    let cardTemplate = `<div class="card">
+<h3 class="portfolioTitle">${title}</h3>
+<p class="portfolioDescription">${description}</p>
+<button type="submit">GO!</button>
+</div>`
+    return cardTemplate;
+}
+
+function displayCard(element, template) {
+    $(element).html(template);
 }
