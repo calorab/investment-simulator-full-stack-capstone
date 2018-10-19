@@ -1,6 +1,11 @@
-hidePages();
+//trigger for when the page loads
+$(function () {
 
-$('#homePage').show();
+    hidePages();
+    $('#homePage').show();
+    createAccount();
+});
+
 
 //hide pages
 function hidePages() {
@@ -10,9 +15,56 @@ function hidePages() {
 }
 // ++ backend
 function createAccount() {
-    $('#createAccountButton').submit(event => {
-        alert('You have successfully created a new account');
-        $('#userDashboard').show();
+
+    $('.createAccountForm').submit(event => {
+        event.preventDefault();
+
+        //take the input from the user
+        const username = $("#createUsername").val();
+        const password = $("#createPassword").val();
+
+        //validate the input
+        if (username == "") {
+            alert('Please add an user name');
+        } else if (password == "") {
+            alert('Please add a password');
+        }
+        //if the input is valid
+        else {
+            //create the payload object (what data we send to the api call)
+            const newUserObject = {
+                username: username,
+                password: password
+            };
+            console.log(newUserObject);
+
+            //make the api call using the payload above
+            $.ajax({
+                    type: 'POST',
+                    url: '/users/create',
+                    dataType: 'json',
+                    data: JSON.stringify(newUserObject),
+                    contentType: 'application/json'
+                })
+                //if call is succefull
+                .done(function (result) {
+                    console.log(result);
+                    $('#loggedInName').text(result.name);
+                    $('#loggedInUserName').val(result.username);
+                    $('section').hide();
+                    $('.navbar').show();
+                    $('#user-dashboard').show();
+                    populateUserDashboardDate(result.username);
+                })
+                //if the call is failing
+                .fail(function (jqXHR, error, errorThrown) {
+                    console.log(jqXHR);
+                    console.log(error);
+                    console.log(errorThrown);
+                });
+        };
+        //        alert('You have successfully created a new account');
+        //        $('#userDashboard').show();
     });
 }
 
