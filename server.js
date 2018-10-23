@@ -61,7 +61,7 @@ function closeServer() {
     }));
 }
 
-//Need to update this ---External API Call--- !!!
+
 let getFromBarchart = function (symbol) {
     let emitter = new events.EventEmitter();
 
@@ -112,8 +112,6 @@ app.get('/barchart/:symbol', function (req, res) {
     });
 
 });
-
-//Did you update the above?? **
 
 
 // ---------------USER ENDPOINTS-------------------------------------

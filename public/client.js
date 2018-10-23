@@ -21,7 +21,7 @@ function addInvestment() {
         $('#userDashboard').show();
     });
 }
-
+//needs to be with event handler not function
 function goToPortfolio() {
     $(this).parent().find('#portfolioDashboard').show();
 }
@@ -40,6 +40,17 @@ function createTemplate() {
 function displayCard(element, template) {
     $(element).html(template);
 }
+
+$('.deletePortfolio').on(click, function (event) {
+    let confirmDelete = `<div class="page" id="deletePortfolioPage">
+    <p>Are you sure you want to delete this portfolio? This is permanent.</p>
+        <button type="button" class="confirmDelete">Confirm</button>
+        <button type="button" class="cancelDelete">Cancel</button>
+        </div>`;
+    console.log(confirmDelete);
+    $('.deletePortfolioButton').html(confirmDelete);
+});
+
 
 $('.createAccountForm').submit(event => {
     event.preventDefault();
@@ -128,7 +139,6 @@ $('#loginForm').submit(event => {
                 //            htmlUserDashboard();
                 //            populateUserDashboardDate(result.username); //AJAX call in here??
                 //                noEntries();
-
             })
             //if the call is failing
             .fail(function (jqXHR, error, errorThrown) {
@@ -197,3 +207,83 @@ $('.addPortfolioForm').submit(event => {
             });
     };
 });
+
+$('.confirmDelete').on(click, function (event) {
+
+    //take the input from the user  === QUESTION ABOUT THIS FOR MARIUS!!!
+    const entryId = $(this).parent().find('.inputEntryID').val();
+    const loggedInUserName = $("#loggedInUserName").val();
+    const parentDiv = $(this).closest('.entries-container');
+
+    //    console.log(currentForm, entryId);
+    //    console.log(entryType, inputDate, inputPlay, inputAuthor, inputRole, inputCo, inputLocation, inputNotes);
+
+    //make the api call using the payload above
+    $.ajax({
+            type: 'DELETE',
+            //=== QUESTION ABOUT THIS TOO
+            url: `/portfolio/${entryId}`,
+            dataType: 'json',
+            contentType: 'application/json'
+        })
+
+        //if call is succefull
+        .done(function (result) {
+            console.log(result);
+            alert("Portfolio deleted");
+            $('#portfolioDashboard').hide();
+            $('#userDashboard').show();
+        })
+
+        //if the call is failing
+        .fail(function (jqXHR, error, errorThrown) {
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+        });
+});
+
+$('.newInvestmentForm').submit(function (event) {
+    event.preventDefault();
+
+    const title = $("#stockSearch").val();
+
+    if (title == "") {
+        alert('Please input portfolio title');
+    }
+
+    //if the input is valid
+    else {
+
+        //create the payload object (what data we send to the api call)
+        const entryObject = {
+            title: title
+        };
+        console.log(entryObject);
+
+        //make the api call using the payload above
+        $.ajax({
+                type: 'GET',
+                url: '/barchart/:symbol',
+                dataType: 'json',
+                data: JSON.stringify(entryObject),
+                contentType: 'application/json'
+            })
+            //if call is succefull
+            .done(function (result) {
+                console.log(result);
+
+                //how do I go back to specific partfoio where I added the investment
+                $('.addInvestment').hide();
+                alert('You have successfully added a new Investment');
+            })
+            //if the call is failing
+            .fail(function (jqXHR, error, errorThrown) {
+                console.log(jqXHR);
+                console.log(error);
+                console.log(errorThrown);
+            });
+    };
+});
+
+
