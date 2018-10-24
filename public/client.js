@@ -2,8 +2,7 @@
 $(function () {
 
     hidePages();
-    $('#homePage').show();
-    createAccount();
+    $('#loginPage').show();
 });
 
 
@@ -41,7 +40,7 @@ function displayCard(element, template) {
     $(element).html(template);
 }
 
-$('.deletePortfolio').on(click, function (event) {
+$('.deletePortfolio').on('click', function (event) {
     let confirmDelete = `<div class="page" id="deletePortfolioPage">
     <p>Are you sure you want to delete this portfolio? This is permanent.</p>
         <button type="button" class="confirmDelete">Confirm</button>
@@ -99,9 +98,9 @@ $('.createAccountForm').submit(event => {
     };
 });
 
-$('#loginForm').submit(event => {
+$('.loginForm').submit(event => {
     event.preventDefault();
-
+    alert("here");
     //take the input from the user
     const username = $("#loginUsername").val();
     const password = $("#loginPassword").val();
@@ -119,7 +118,7 @@ $('#loginForm').submit(event => {
             username: username,
             password: password
         };
-        //console.log(loginUserObject);
+        console.log(loginUserObject);
 
         //make the api call using the payload above
         $.ajax({
@@ -135,7 +134,7 @@ $('#loginForm').submit(event => {
                 $('#userDashboard').show();
                 $('#loginPage').hide();
                 //            $('#loggedInName').text(result.name);
-                //            $('#loggedInUserName').val(result.username);
+                $('#loggedInUserName').val(result.username);
                 //            htmlUserDashboard();
                 //            populateUserDashboardDate(result.username); //AJAX call in here??
                 //                noEntries();
@@ -208,7 +207,7 @@ $('.addPortfolioForm').submit(event => {
     };
 });
 
-$('.confirmDelete').on(click, function (event) {
+$('.confirmDelete').on('click', function (event) {
 
     //take the input from the user  === QUESTION ABOUT THIS FOR MARIUS!!!
     const entryId = $(this).parent().find('.inputEntryID').val();
@@ -285,5 +284,3 @@ $('.newInvestmentForm').submit(function (event) {
             });
     };
 });
-
-
