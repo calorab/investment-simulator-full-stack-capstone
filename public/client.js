@@ -272,7 +272,7 @@ $('.newInvestmentForm').submit(function (event) {
             .done(function (result) {
                 console.log(result);
 
-                //how do I go back to specific partfoio where I added the investment
+                //how do I go back to specific portfolio where I added the investment
                 $('.addInvestment').hide();
                 alert('You have successfully added a new Investment');
             })
