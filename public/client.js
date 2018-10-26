@@ -2,7 +2,7 @@
 $(function () {
 
     hidePages();
-    $('#loginPage').show();
+    $('#homePage').show();
 });
 
 
@@ -16,14 +16,12 @@ function hidePages() {
 
 function addInvestment() {
     $('#addStock').submit(event => {
+
         alert('You have successfully added a new Stock');
         $('#userDashboard').show();
     });
 }
-//needs to be with event handler not function
-function goToPortfolio() {
-    $(this).parent().find('#portfolioDashboard').show();
-}
+
 
 function createTemplate() {
     let title = $('.newTitle').val();
@@ -31,7 +29,7 @@ function createTemplate() {
     let cardTemplate = `<div class="card">
 <h3 class="portfolioTitle">${title}</h3>
 <p class="portfolioDescription">${description}</p>
-<button type="submit">GO!</button>
+<button type="button">GO!</button>
 </div>`
     return cardTemplate;
 }
@@ -149,6 +147,7 @@ $('.loginForm').submit(event => {
     };
 });
 
+// ---------------Portfolio end points--------------------------
 $('.addPortfolioForm').submit(event => {
     event.preventDefault;
     let card = createTemplate();
@@ -207,10 +206,48 @@ $('.addPortfolioForm').submit(event => {
     };
 });
 
+$('#portfolioSection button').on('click', function (event) {
+    event.preventDefault();
+    const title = $(this).parent().find('.portfolioTitleValue').val();
+
+    const entryObject = {
+        title: title
+    };
+    console.log(entryObject);
+
+    //make the api call using the payload above Marius - is this right?
+    $.ajax({
+            type: 'GET',
+            url: '/portfolio/' + title,
+            dataType: 'json',
+            data: JSON.stringify(entryObject),
+            contentType: 'application/json'
+        })
+        //if call is succefull
+        .done(function (result) {
+            console.log(result);
+
+            //how do I go back to specific portfolio where I added the investment
+            $('#userDashboard').hide();
+            $(this).parent().find('#portfolioDashboard').show();
+            alert('You have successfully added a new Investment');
+            //function getLastPortfolio Marius - how to do this? do I need line 233 above?*
+        })
+        //if the call is failing
+        .fail(function (jqXHR, error, errorThrown) {
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+        });
+
+    $(this).parent().find(".container-class-name").show()
+});
+
 $('.confirmDelete').on('click', function (event) {
 
     //take the input from the user  === QUESTION ABOUT THIS FOR MARIUS!!!
-    const entryId = $(this).parent().find('.inputEntryID').val();
+    //Marius where should inputPortfolioID be??
+    const portfolioId = $(this).parent().find('.inputPortfolioID').val();
     const loggedInUserName = $("#loggedInUserName").val();
     const parentDiv = $(this).closest('.entries-container');
 
@@ -220,8 +257,8 @@ $('.confirmDelete').on('click', function (event) {
     //make the api call using the payload above
     $.ajax({
             type: 'DELETE',
-            //=== QUESTION ABOUT THIS TOO
-            url: `/portfolio/${entryId}`,
+            //=== Marius QUESTION ABOUT THIS TOO
+            url: `/portfolio/${portfolioId}`,
             dataType: 'json',
             contentType: 'application/json'
         })
@@ -242,12 +279,17 @@ $('.confirmDelete').on('click', function (event) {
         });
 });
 
+
+// ---------------Investment end points--------------------------
+//create a new investment
 $('.newInvestmentForm').submit(function (event) {
     event.preventDefault();
 
-    const title = $("#stockSearch").val();
+    const symbol = $("#stockSearch").val();
+    const portfolioId = "";
 
-    if (title == "") {
+
+    if (symbol == "") {
         alert('Please input portfolio title');
     }
 
@@ -256,14 +298,15 @@ $('.newInvestmentForm').submit(function (event) {
 
         //create the payload object (what data we send to the api call)
         const entryObject = {
-            title: title
+            symbol: symbol,
+            portfolioId: portfolioId
         };
         console.log(entryObject);
 
         //make the api call using the payload above
         $.ajax({
-                type: 'GET',
-                url: '/barchart/:symbol',
+                type: 'POST',
+                url: '/investment/create',
                 dataType: 'json',
                 data: JSON.stringify(entryObject),
                 contentType: 'application/json'
@@ -275,6 +318,8 @@ $('.newInvestmentForm').submit(function (event) {
                 //how do I go back to specific portfolio where I added the investment
                 $('.addInvestment').hide();
                 alert('You have successfully added a new Investment');
+
+                //function getLastPortfolio
             })
             //if the call is failing
             .fail(function (jqXHR, error, errorThrown) {
@@ -283,4 +328,29 @@ $('.newInvestmentForm').submit(function (event) {
                 console.log(errorThrown);
             });
     };
+});
+
+//update an investment
+
+//delete an investment
+$('.deleteStock').on('click', function (event) {
+    event.preventDefault();
+
+    $.ajax({
+            method: 'DELETE',
+            dataType: 'json',
+            contentType: 'application/json',
+            url: '/delete - from - portfolio /' + symbol,
+        })
+        .done(function (result) {
+            populateBucketListContainer();
+            populateBeenThereContainer();
+            sweetAlert('Removed!', 'Maybe next time...', 'success');
+        })
+        .fail(function (jqXHR, error, errorThrown) {
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+            sweetAlert('Oops...', 'Please try again', 'error');
+        });
 });

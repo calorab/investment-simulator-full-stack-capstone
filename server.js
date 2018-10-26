@@ -1,5 +1,5 @@
 const User = require('./models/user');
-const Entry = require('./models/entry');
+const Investment = require('./models/investment');
 const bodyParser = require('body-parser');
 const config = require('./config');
 const mongoose = require('mongoose');
@@ -235,31 +235,68 @@ app.post('/users/login', function (req, res) {
     });
 });
 
-
-// -------------entry ENDPOINTS------------------------------------------------
+// -------------Portfolio ENDPOINTS------------------------------------------------
 // POST -----------------------------------------
-// creating a new Entry
-app.post('/entry/create', (req, res) => {
-    let entryType = req.body.entryType;
-    let inputDate = req.body.inputDate;
-    let inputPlay = req.body.inputPlay;
-    let inputAuthor = req.body.inputAuthor;
-    let inputRole = req.body.inputRole;
-    let inputCo = req.body.inputCo;
-    let inputLocation = req.body.inputLocation;
-    let inputNotes = req.body.inputNotes;
-    let loggedInUserName = req.body.loggedInUserName;
+// creating a new Portfolio
+app.post('/portfolio/create', (req, res) => {
+    let portfolio = req.body.portfolio;
 
-    Entry.create({
-        entryType,
-        inputDate,
-        inputPlay,
-        inputAuthor,
-        inputRole,
-        inputCo,
-        inputLocation,
-        inputNotes,
-        loggedInUserName
+
+    Portfolio.create({
+        portfolio,
+
+    }, (err, item) => {
+        if (err) {
+            return res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+        if (item) {
+            return res.json(item);
+        }
+    });
+});
+
+// GET -----------------------------------------
+// reading a Portfolio
+app.get('/portfolio/:id', function (req, res) {
+    Portfolio
+        .findById(req.params.id).exec().then(function (portfolio) {
+            return res.json(portfolio);
+        })
+        .catch(function (portfolio) {
+            console.error(err);
+            res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        });
+});
+
+// DELETE -----------------------------------------
+// deleting a  Portfolio by id
+
+app.delete('/portfolio/:id', function (req, res) {
+    Potfolio.findByIdAndRemove(req.params.id).exec().then(function (portfolio) {
+        return res.status(204).end();
+    }).catch(function (err) {
+        return res.status(500).json({
+            message: 'Internal Server Error'
+        });
+    });
+});
+
+
+
+// -------------investment ENDPOINTS------------------------------------------------
+// POST -----------------------------------------
+// creating a new Investment
+app.post('/investment/create', (req, res) => {
+    let investmentSymbol = req.body.investmentSymbol;
+
+
+    Investment.create({
+        investmentSymbol,
+
     }, (err, item) => {
         if (err) {
             return res.status(500).json({
@@ -273,20 +310,20 @@ app.post('/entry/create', (req, res) => {
 });
 
 // PUT --------------------------------------
-app.put('/entry/:id', function (req, res) {
+app.put('/investment/:symbol', function (req, res) {
     let toUpdate = {};
-    //    let updateableFields = ['achieveWhat', 'achieveHow', 'achieveWhen', 'achieveWhy']; //<--Marius? 'entryType
-    let updateableFields = ['entryType', 'inputDate', 'inputPlay', 'inputAuthor', 'inputRole', 'inputCo', 'inputLocation', 'inputNotes', 'loggedInUserName'];
+
+    let updateableFields = ['investmentSymbol'];
     updateableFields.forEach(function (field) {
         if (field in req.body) {
             toUpdate[field] = req.body[field];
         }
     });
     //    console.log(toUpdate);
-    Entry
+    Investment
         .findByIdAndUpdate(req.params.id, {
             $set: toUpdate
-        }).exec().then(function (achievement) {
+        }).exec().then(function (output) {
             return res.status(204).end();
         }).catch(function (err) {
             return res.status(500).json({
@@ -295,114 +332,15 @@ app.put('/entry/:id', function (req, res) {
         });
 });
 
+
 // GET ------------------------------------
-// accessing all of a user's entries
-app.get('/entry-date/:user', function (req, res) {
-
-    Entry
-        .find()
-        .sort('inputDate')
-        .then(function (entries) {
-            let entriesOutput = [];
-            entries.map(function (entry) {
-                if (entry.loggedInUserName == req.params.user) {
-                    entriesOutput.push(entry);
-                }
-            });
-            res.json({
-                entriesOutput
-            });
+// accessing a single investment by id
+app.get('/investment/:id', function (req, res) {
+    Investment
+        .findById(req.params.id).exec().then(function (investment) {
+            return res.json(investment);
         })
-        .catch(function (err) {
-            console.error(err);
-            res.status(500).json({
-                message: 'Internal server error'
-            });
-        });
-});
-app.get('/entry-read/:user', function (req, res) {
-
-    Entry
-        .find({
-            "entryType": "read"
-        })
-        .sort('inputDate')
-        .then(function (entries) {
-            let entriesOutput = [];
-            entries.map(function (entry) {
-                if (entry.loggedInUserName == req.params.user) {
-                    entriesOutput.push(entry);
-                }
-            });
-            res.json({
-                entriesOutput
-            });
-        })
-        .catch(function (err) {
-            console.error(err);
-            res.status(500).json({
-                message: 'Internal server error'
-            });
-        });
-});
-app.get('/entry-seen/:user', function (req, res) {
-
-    Entry
-        .find({
-            "entryType": "seen"
-        })
-        .sort('inputDate')
-        .then(function (entries) {
-            let entriesOutput = [];
-            entries.map(function (entry) {
-                if (entry.loggedInUserName == req.params.user) {
-                    entriesOutput.push(entry);
-                }
-            });
-            res.json({
-                entriesOutput
-            });
-        })
-        .catch(function (err) {
-            console.error(err);
-            res.status(500).json({
-                message: 'Internal server error'
-            });
-        });
-});
-app.get('/entry-performed/:user', function (req, res) {
-
-    Entry
-        .find({
-            "entryType": "performed"
-        })
-        .sort('inputDate')
-        .then(function (entries) {
-            let entriesOutput = [];
-            entries.map(function (entry) {
-                if (entry.loggedInUserName == req.params.user) {
-                    entriesOutput.push(entry);
-                }
-            });
-            res.json({
-                entriesOutput
-            });
-        })
-        .catch(function (err) {
-            console.error(err);
-            res.status(500).json({
-                message: 'Internal server error'
-            });
-        });
-});
-
-// accessing a single achievement by id
-app.get('/entry/:id', function (req, res) {
-    Entry
-        .findById(req.params.id).exec().then(function (entry) {
-            return res.json(entry);
-        })
-        .catch(function (entries) {
+        .catch(function (investment) {
             console.error(err);
             res.status(500).json({
                 message: 'Internal Server Error'
@@ -412,8 +350,8 @@ app.get('/entry/:id', function (req, res) {
 
 // DELETE ----------------------------------------
 // deleting an achievement by id
-app.delete('/entry/:id', function (req, res) {
-    Entry.findByIdAndRemove(req.params.id).exec().then(function (entry) {
+app.delete('delete-from-portfolio/:id', function (req, res) {
+    Investment.findByIdAndRemove(req.params.id).exec().then(function (investment) {
         return res.status(204).end();
     }).catch(function (err) {
         return res.status(500).json({
