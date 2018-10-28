@@ -2,7 +2,7 @@
 $(function () {
 
     hidePages();
-    $('#addPortfolio').show();
+    $('#loginPage').show();
 });
 
 
@@ -163,6 +163,7 @@ $('.loginForm').submit(event => {
 
 
 // ---------------Portfolio end points--------------------------
+//Portfolio POST
 $('.addPortfolioForm').submit(event => {
     event.preventDefault();
     let card = displayCard();
@@ -201,7 +202,6 @@ $('.addPortfolioForm').submit(event => {
                 $('#userDashboard').show();
                 $('#addPortfolio').hide();
                 displayCard();
-
             })
             //if the call is failing
             .fail(function (jqXHR, error, errorThrown) {
@@ -212,7 +212,9 @@ $('.addPortfolioForm').submit(event => {
     };
 });
 
-$('#portfolioSection button').on('click', function (event) {
+
+//Portfolio GET
+$('#portfolioSection').on('click', 'button', function () {
     event.preventDefault();
     const title = $(this).parent().find('.portfolioTitleValue').val();
 
@@ -220,6 +222,8 @@ $('#portfolioSection button').on('click', function (event) {
         title: title
     };
     console.log(entryObject);
+
+    //    CALEB MARIUS - good till here Sun @ 1:30 Problem is "undefined" title and description
 
     //make the api call using the payload above Marius - is this right?
     $.ajax({
@@ -232,12 +236,11 @@ $('#portfolioSection button').on('click', function (event) {
         //if call is succefull
         .done(function (result) {
             console.log(result);
-
-            //how do I go back to specific portfolio where I added the investment
             $('#userDashboard').hide();
-            $(this).parent().find('#portfolioDashboard').show();
-            alert('You have successfully added a new Investment');
-            //function getLastPortfolio Marius - how to do this? do I need line 233 above?*
+            $('#portfolioDashboard').show();
+
+            alert('YAY!');
+            //function getLastPortfolio Marius
         })
         //if the call is failing
         .fail(function (jqXHR, error, errorThrown) {
@@ -245,8 +248,6 @@ $('#portfolioSection button').on('click', function (event) {
             console.log(error);
             console.log(errorThrown);
         });
-
-    $(this).parent().find(".container-class-name").show()
 });
 
 $('.confirmDelete').on('click', function (event) {

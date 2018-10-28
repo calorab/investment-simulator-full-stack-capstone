@@ -260,9 +260,9 @@ app.post('/portfolio/create', (req, res) => {
 
 // GET -----------------------------------------
 // reading a Portfolio
-app.get('/portfolio/:id', function (req, res) {
+app.get('/portfolio/title', function (req, res) {
     Portfolio
-        .findById(req.params.id).exec().then(function (portfolio) {
+        .findById(req.params.title).exec().then(function (portfolio) {
             return res.json(portfolio);
         })
         .catch(function (portfolio) {
