@@ -52,11 +52,12 @@
     <div class="page" id="userDashboard">
         <h2>Portfolios</h2>
         <!--        add in image link -->
-        <button id="goToNewPortfolio" style="background-image: "></button>
+        <button id="goToNewPortfolio" type="button">+</button>
         <section id="portfolioSection">
+            <!--
             <div class="card">
-                <!--           CALEB    add to card template-->
-                <input type="hidden" class="portfolioTitleValue" value="Portfolio 1: Tech/Finance">
+                add to card template DONE
+                <input type="hidden" class="portfolioTitleValue" value=${portfolioTitle}>
                 <h3 class="portfolioTitle">Portfolio 1: Tech/Finance</h3>
                 <p class="portfolioDescription">Lorem ipsum dolor sit amet, ludus corrumpit ea duo. Te quem inermis aliquando nam, mundi fuisset mediocrem usu te. </p>
                 <button type="button">GO!</button>
@@ -71,6 +72,7 @@
                 <p class="portfolioDescription">Lorem ipsum dolor sit amet, ludus corrumpit ea duo. Te quem inermis aliquando nam, mundi fuisset mediocrem usu te. </p>
                 <button type="submit">GO!</button>
             </div>
+-->
         </section>
     </div>
 
@@ -103,8 +105,8 @@
             <legend>Create New Portfolio</legend>
             <fieldset>
                 <label for="newPortfolioTitle" class="newTitle">Title</label>
-                <input type="email" id="portfolioTitle" placeholder="Title">
-                <label for="newPortfolioDescription" class="newDescription">Description</label>
+                <input type="text" id="newPortfolioTitle" placeholder="Title">
+                <label for="newPortfolioDescription" id="newDescription">Description</label>
                 <input type="text" id="newPortfolioDescription" placeholder="Enter description...">
             </fieldset>
             <button type="submit" class="submit-button" id="createNewPortfolio">Create</button>

@@ -1,5 +1,6 @@
 const User = require('./models/user');
 const Investment = require('./models/investment');
+const Portfolio = require('./models/portfolios');
 const bodyParser = require('body-parser');
 const config = require('./config');
 const mongoose = require('mongoose');
@@ -306,6 +307,25 @@ app.post('/investment/create', (req, res) => {
         if (item) {
             return res.json(item);
         }
+        portfolio.find(function (err, items) {
+            if (err) {
+                return res.status(404).json({
+                    message: 'Item not found.'
+                });
+            }
+            portfolio.update({
+                _id: req.params.portfolioId
+            }, {
+                //Marius
+                $push: {
+                    investments: {
+                        "symbol": item.symbol
+                    }
+                }
+            }, function () {
+                res.status(201).json(items);
+            });
+        });
     });
 });
 

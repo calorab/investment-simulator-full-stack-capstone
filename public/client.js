@@ -2,7 +2,7 @@
 $(function () {
 
     hidePages();
-    $('#homePage').show();
+    $('#addPortfolio').show();
 });
 
 
@@ -22,28 +22,42 @@ function addInvestment() {
     });
 }
 
+//function createTemplate() {
+//    let title = $('.newPortfolioTitle').val();
+//    let description = $('.newPortfolioDescription').val();
+//    let cardTemplate = `<div class="card">
+//<input type="hidden" class="portfolioTitleValue" value=${title}>
+//<h3 class="portfolioTitle">${title}</h3>
+//<p class="portfolioDescription">${description}</p>
+//<button type="button">GO!</button>
+//</div>`;
+//   return c
 
-function createTemplate() {
-    let title = $('.newTitle').val();
-    let description = $('.newDescription').val();
-    let cardTemplate = `<div class="card">
+
+function displayCard() {
+    let title = $('.newPortfolioTitle').val();
+    let description = $('.newPortfolioDescription').val();
+    let cardTemplate = `<input type="hidden" class="portfolioTitleValue" value=${title}>
+<div class="card">
 <h3 class="portfolioTitle">${title}</h3>
 <p class="portfolioDescription">${description}</p>
 <button type="button">GO!</button>
-</div>`
-    return cardTemplate;
+</div>`;
+    $('#portfolioSection').html(cardTemplate);
 }
 
-function displayCard(element, template) {
-    $(element).html(template);
-}
+$('#goToNewPortfolio').on('click', function (event) {
+    $('#userDashboard').hide();
+    $('#addPortfolio').show();
+});
+
 
 $('.deletePortfolio').on('click', function (event) {
     let confirmDelete = `<div class="page" id="deletePortfolioPage">
-    <p>Are you sure you want to delete this portfolio? This is permanent.</p>
-        <button type="button" class="confirmDelete">Confirm</button>
-        <button type="button" class="cancelDelete">Cancel</button>
-        </div>`;
+<p>Are you sure you want to delete this portfolio? This is permanent.</p>
+<button type="button" class="confirmDelete">Confirm</button>
+<button type="button" class="cancelDelete">Cancel</button>
+</div>`;
     console.log(confirmDelete);
     $('.deletePortfolioButton').html(confirmDelete);
 });
@@ -98,7 +112,7 @@ $('.createAccountForm').submit(event => {
 
 $('.loginForm').submit(event => {
     event.preventDefault();
-    alert("here");
+
     //take the input from the user
     const username = $("#loginUsername").val();
     const password = $("#loginPassword").val();
@@ -147,12 +161,14 @@ $('.loginForm').submit(event => {
     };
 });
 
+
 // ---------------Portfolio end points--------------------------
 $('.addPortfolioForm').submit(event => {
-    event.preventDefault;
-    let card = createTemplate();
+    event.preventDefault();
+    let card = displayCard();
+
     //take the input from the user
-    const title = $("#portfolioTitle").val();
+    const title = $("#newPortfolioTitle").val();
     const description = $("#newPortfolioDescription").val();
 
     if (title == "") {
@@ -160,7 +176,6 @@ $('.addPortfolioForm').submit(event => {
     } else if (description == "") {
         alert('Please input portfolio description');
     }
-
     //if the input is valid
     else {
 
@@ -182,20 +197,11 @@ $('.addPortfolioForm').submit(event => {
             //if call is succefull
             .done(function (result) {
                 console.log(result);
-                displayCard('#portfolioSection', card);
                 alert('You have successfully added a new portfolio');
                 $('#userDashboard').show();
-                //            $('#loggedInName').text(result.name);
-                //            $('#loggedInUserName').val(result.username);
-                //            $('#add-entry-container').hide();
-                //            //                noEntries();
-                //            //Add Entry to page
-                //            $('#user-list').prepend(addEntryRenderHTML(result));
-                //            $('html, body').animate({
-                //                scrollTop: $(`#${result._id}`).offset().top
-                //            }, 1000);
-                //                $().scrollTop();
-                //                updateEditFormValues(result);
+                $('#addPortfolio').hide();
+                displayCard();
+
             })
             //if the call is failing
             .fail(function (jqXHR, error, errorThrown) {
