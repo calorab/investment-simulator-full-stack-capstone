@@ -33,17 +33,38 @@ function addInvestment() {
 //</div>`;
 //   return c
 
+function getCardsByUser(loggedInUserName) {
+    $.ajax({
+            type: 'GET',
+            url: '/portfolio/' + loggedInUserName,
+            dataType: 'json',
+            contentType: 'application/json'
+        })
+        //if call is succefull
+        .done(function (result) {
+            console.log(result);
+            displayCard(result);
+        })
+        //if the call is failing
+        .fail(function (jqXHR, error, errorThrown) {
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+        });
+}
 
-function displayCard() {
-    let title = $('.newPortfolioTitle').val();
-    let description = $('.newPortfolioDescription').val();
-    let cardTemplate = `<input type="hidden" class="portfolioTitleValue" value=${title}>
+
+function displayCard(results) {
+    let cardTemplate = "";
+    $.each(results, function (resultsKey, resultsValue) {
+        cardTemplate += `<input type="hidden" class="portfolioTitleValue" value=${resultsValue.title}>
 <div class="card">
-<h3 class="portfolioTitle">${title}</h3>
-<p class="portfolioDescription">${description}</p>
+<h3 class="portfolioTitle">${resultsValue.title}</h3>
+<p class="portfolioDescription">${resultsValue.description}</p>
 <button type="button">GO!</button>
 </div>`;
-    $('#portfolioSection').html(cardTemplate);
+    });
+    $("#portfolioSection").html(cardTemplate);
 }
 
 $('#goToNewPortfolio').on('click', function (event) {
@@ -147,6 +168,7 @@ $('.loginForm').submit(event => {
                 $('#loginPage').hide();
                 //            $('#loggedInName').text(result.name);
                 $('#loggedInUserName').val(result.username);
+                getCardsByUser(result.username);
                 //            htmlUserDashboard();
                 //            populateUserDashboardDate(result.username); //AJAX call in here??
                 //                noEntries();
@@ -166,11 +188,13 @@ $('.loginForm').submit(event => {
 //Portfolio POST
 $('.addPortfolioForm').submit(event => {
     event.preventDefault();
-    let card = displayCard();
+
 
     //take the input from the user
     const title = $("#newPortfolioTitle").val();
     const description = $("#newPortfolioDescription").val();
+    const userName = $("#loggedInUserName").val();
+
 
     if (title == "") {
         alert('Please input portfolio title');
@@ -183,7 +207,8 @@ $('.addPortfolioForm').submit(event => {
         //create the payload object (what data we send to the api call)
         const entryObject = {
             title: title,
-            description: description
+            description: description,
+            userName: userName
         };
         console.log(entryObject);
 
@@ -201,7 +226,7 @@ $('.addPortfolioForm').submit(event => {
                 alert('You have successfully added a new portfolio');
                 $('#userDashboard').show();
                 $('#addPortfolio').hide();
-                displayCard();
+                getCardsByUser(userName);
             })
             //if the call is failing
             .fail(function (jqXHR, error, errorThrown) {
@@ -213,42 +238,12 @@ $('.addPortfolioForm').submit(event => {
 });
 
 
-//Portfolio GET
-$('#portfolioSection').on('click', 'button', function () {
-    event.preventDefault();
-    const title = $(this).parent().find('.portfolioTitleValue').val();
-
-    const entryObject = {
-        title: title
-    };
-    console.log(entryObject);
-
-    //    CALEB MARIUS - good till here Sun @ 1:30 Problem is "undefined" title and description
-
-    //make the api call using the payload above Marius - is this right?
-    $.ajax({
-            type: 'GET',
-            url: '/portfolio/' + title,
-            dataType: 'json',
-            data: JSON.stringify(entryObject),
-            contentType: 'application/json'
-        })
-        //if call is succefull
-        .done(function (result) {
-            console.log(result);
-            $('#userDashboard').hide();
-            $('#portfolioDashboard').show();
-
-            alert('YAY!');
-            //function getLastPortfolio Marius
-        })
-        //if the call is failing
-        .fail(function (jqXHR, error, errorThrown) {
-            console.log(jqXHR);
-            console.log(error);
-            console.log(errorThrown);
-        });
-});
+//Portfolio GET ****
+//$('#portfolioSection').on('click', 'button', function () {
+//    event.preventDefault();
+//
+//
+//});
 
 $('.confirmDelete').on('click', function (event) {
 
