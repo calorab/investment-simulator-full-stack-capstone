@@ -22,17 +22,6 @@ function addInvestment() {
     });
 }
 
-//function createTemplate() {
-//    let title = $('.newPortfolioTitle').val();
-//    let description = $('.newPortfolioDescription').val();
-//    let cardTemplate = `<div class="card">
-//<input type="hidden" class="portfolioTitleValue" value=${title}>
-//<h3 class="portfolioTitle">${title}</h3>
-//<p class="portfolioDescription">${description}</p>
-//<button type="button">GO!</button>
-//</div>`;
-//   return c
-
 function getCardsByUser(loggedInUserName) {
     $.ajax({
             type: 'GET',
@@ -65,6 +54,56 @@ function displayCard(results) {
 </div>`;
     });
     $("#portfolioSection").html(cardTemplate);
+}
+
+function getLastPortfolio() {
+    const portfolioTitle = $('.portfolioTitleValue').val();
+
+    $.ajax({
+        type: 'GET',
+        url: '/portfolio/' + portfolioTitle,
+        dataType: 'json',
+        contentType: 'application/json'
+    })
+    //if call is succefull
+        .done(function (result) {
+        console.log(result);
+        $('#portfolioDashboard').show();
+
+    })
+    //if the call is failing
+        .fail(function (jqXHR, error, errorThrown) {
+        console.log(jqXHR);
+        console.log(error);
+        console.log(errorThrown);
+    });
+}
+//MARIUS2
+function getPortfolioByTitle() {
+    const portfolioTitle = $('.portfolioTitleValue').val();
+
+    $.ajax({
+        type: 'GET',
+        url: '/portfolio/' + portfolioTitle,
+        dataType: 'json',
+        contentType: 'application/json'
+    })
+    //if call is succefull
+        .done(function (result) {
+        console.log(result);
+        //displayPortfolio();
+
+    })
+    //if the call is failing
+        .fail(function (jqXHR, error, errorThrown) {
+        console.log(jqXHR);
+        console.log(error);
+        console.log(errorThrown);
+    });
+}
+//MARIUS3
+function displayPortfolio(data){
+
 }
 
 $('#goToNewPortfolio').on('click', function (event) {
@@ -227,6 +266,8 @@ $('.addPortfolioForm').submit(event => {
                 $('#userDashboard').show();
                 $('#addPortfolio').hide();
                 getCardsByUser(userName);
+                //MARIUS1
+                $('.portfolioTitleValue').val(result.title);
             })
             //if the call is failing
             .fail(function (jqXHR, error, errorThrown) {
@@ -288,20 +329,16 @@ $('.newInvestmentForm').submit(function (event) {
     event.preventDefault();
 
     const symbol = $("#stockSearch").val();
-    const portfolioId = "";
-
 
     if (symbol == "") {
-        alert('Please input portfolio title');
+        alert('Please input stock symbol');
     }
 
     //if the input is valid
     else {
-
         //create the payload object (what data we send to the api call)
         const entryObject = {
-            symbol: symbol,
-            portfolioId: portfolioId
+            symbol: symbol
         };
         console.log(entryObject);
 
@@ -316,12 +353,9 @@ $('.newInvestmentForm').submit(function (event) {
             //if call is succefull
             .done(function (result) {
                 console.log(result);
-
-                //how do I go back to specific portfolio where I added the investment
+                getLastPortfolio();
                 $('.addInvestment').hide();
                 alert('You have successfully added a new Investment');
-
-                //function getLastPortfolio
             })
             //if the call is failing
             .fail(function (jqXHR, error, errorThrown) {
