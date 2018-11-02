@@ -81,21 +81,32 @@
         <h2 class="portfolioName">Portfolio 1</h2>
         <p class="description">This portfolio is heavy technology and finance stocks. I'm testing this combination vs portfolio 2 which is heavy healthcare stock.</p>
         <button id="searchInvestments" style="background-image: "></button>
+<!--
         <section id="portfolioStats">
-            <div id="container"></div>
-            <!--            <div id="container2"></div>-->
             <p class="stocksOdd" id="stock1">AAPL <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 1.37%</p>
             <p class="stocksEven" id="stock2">GOOG <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> 3.09%</p>
             <p class="stocksOdd" id="stock3">BAC <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 5.3%</p>
             <p class="stocksEven" id="stock4">TSLA <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> 0.09%</p>
             <p class="stocksOdd" id="stock5">GS <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 4.7%</p>
-
         </section>
+        <div id="addInvestment">
+            <form class="newInvestmentForm">
+                <legend>Add New Investment</legend>
+                <fieldset>
+                    <label for="newStockTitle">Enter a stock symbol</label>
+                    <input type="search" id="stockSearch" placeholder="AAPL">
+                </fieldset>
+                <button type="submit" class="submit-button" id="addStock">Add Stock</button>
+                <button type="button" class="cancelInvestment">Cancel</button>
+            </form>
+            <div class="stockSearchResults"></div>
+        </div>
         <hr class="breakLine">
         <section id="portfolioCharts"></section>
         <div class="deletePortfolioButton">
             <button type='button' class="deletePortfolio">Delete Portfolio</button>
         </div>
+-->
     </div>
 
 
@@ -113,6 +124,7 @@
         </form>
     </div>
 
+<!--
     <div class="page" id="addInvestment">
         <form class="newInvestmentForm">
             <legend>Add New Investment</legend>
@@ -125,6 +137,7 @@
         </form>
         <div class="stockSearchResults"></div>
     </div>
+-->
 
     <script src="https://code.highcharts.com/highcharts.src.js"></script>
     <script src="https://code.highcharts.com/modules/series-label.js"></script>

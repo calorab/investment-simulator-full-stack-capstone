@@ -46,12 +46,39 @@ function getCardsByUser(loggedInUserName) {
 function displayCard(results) {
     let cardTemplate = "";
     $.each(results, function (resultsKey, resultsValue) {
-        cardTemplate += `<input type="hidden" class="portfolioTitleValue" value=${resultsValue.title}>
-<div class="card">
+        getPortfolioByTitle(resultsValue.title); //(resultsValue._id)**
+        cardTemplate += `<div class="card">
+<input type="hidden" class="portfolioTitleValue" value="${resultsValue.title}">
 <h3 class="portfolioTitle">${resultsValue.title}</h3>
 <p class="portfolioDescription">${resultsValue.description}</p>
-<button type="button">GO!</button>
-</div>`;
+<section id="portfolioWrap">
+<section id="portfolioStats">
+<p class="stocksOdd" id="stock1">AAPL <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 1.37%</p>
+<p class="stocksEven" id="stock2">GOOG <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> 3.09%</p>
+<p class="stocksOdd" id="stock3">BAC <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 5.3%</p>
+<p class="stocksEven" id="stock4">TSLA <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> 0.09%</p>
+<p class="stocksOdd" id="stock5">GS <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 4.7%</p>
+</section>
+<div id="addInvestment">
+<form class="newInvestmentForm">
+<input type="hidden" class="portfolioTitleValue" value="${resultsValue.title}">
+<legend>Add New Investment</legend>
+<fieldset>
+<label for="newStockTitle">Enter a stock symbol</label>
+<input type="search" id="stockSearch" placeholder="AAPL">
+</fieldset>
+<button type="submit" class="submit-button" id="addStock">Add Stock</button>
+<button type="button" class="cancelInvestment">Cancel</button>
+</form>
+<div class="stockSearchResults"></div>
+</div>
+<hr class="breakLine">
+<section id="portfolioCharts"></section>
+<div class="deletePortfolioButton">
+<button type='button' class="deletePortfolio">Delete Portfolio</button>
+</div>
+</div>
+</section>`;
     });
     $("#portfolioSection").html(cardTemplate);
 }
@@ -79,9 +106,7 @@ function getLastPortfolio() {
     });
 }
 //MARIUS2
-function getPortfolioByTitle() {
-    const portfolioTitle = $('.portfolioTitleValue').val();
-
+function getPortfolioByTitle(portfolioTitle) {
     $.ajax({
         type: 'GET',
         url: '/portfolio/' + portfolioTitle,
@@ -91,7 +116,7 @@ function getPortfolioByTitle() {
     //if call is succefull
         .done(function (result) {
         console.log(result);
-        //displayPortfolio();
+        //displayInvestments();
 
     })
     //if the call is failing
@@ -102,8 +127,16 @@ function getPortfolioByTitle() {
     });
 }
 //MARIUS3
-function displayPortfolio(data){
-
+function displayInvestments(results){
+    investmentTemplateUp = `<p class="stocksOdd" >${results.symbol}<i class="fa fa-arrow-up" style="font-size:24px;color:green"></i>${results.percentChange}%</p>`;
+    investmentTemplateDown = `<p class="stocksEven" >${results.symbol}<i class="fa fa-arrow-down" style="font-size:24px;color:red"></i>${results.percentChange}%</p>`;
+    $.each(results, function () {
+        if (results.percentChange < 0) {
+            $('#portfolioStats').append(investmentTemplateDown);
+        } else if (results.percentChange > 0) {
+            $('#portfolioStats').append(investmentTemplateUp);
+        }
+    });
 }
 
 $('#goToNewPortfolio').on('click', function (event) {
