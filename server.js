@@ -243,12 +243,14 @@ app.post('/portfolio/create', (req, res) => {
     let title = req.body.title;
     let description = req.body.description;
     let userName = req.body.userName;
+    let userId = req.body.userId;
 
 
     Portfolio.create({
         title,
         description,
-        userName
+        userName,
+        userId
     }, (err, item) => {
         if (err) {
             return res.status(500).json({
@@ -263,10 +265,10 @@ app.post('/portfolio/create', (req, res) => {
 
 // GET -----------------------------------------
 // reading a Portfolio
-app.get('/portfolio/:userName', function (req, res) {
+app.get('/portfolio/:userId', function (req, res) {
     Portfolio
         .find({
-            userName: req.params.userName
+            userId: req.params.userId
         }).exec().then(function (portfolio) {
             return res.json(portfolio);
         })

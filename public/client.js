@@ -1,7 +1,7 @@
 //trigger for when the page loads
 $(function () {
-
     hidePages();
+
     $('#loginPage').show();
 });
 
@@ -13,19 +13,18 @@ function hidePages() {
     });
 }
 
-
 function addInvestment() {
     $('#addStock').submit(event => {
 
         alert('You have successfully added a new Stock');
-        $('#userDashboard').show();
     });
 }
-
-function getCardsByUser(loggedInUserName) {
+//MARIUS- ln 38 "error" in the console
+function getCardsByUser(userId) {
+    console.log(userId);
     $.ajax({
             type: 'GET',
-            url: '/portfolio/' + loggedInUserName,
+            url: '/portfolio/' + userId,
             dataType: 'json',
             contentType: 'application/json'
         })
@@ -46,98 +45,95 @@ function getCardsByUser(loggedInUserName) {
 function displayCard(results) {
     let cardTemplate = "";
     $.each(results, function (resultsKey, resultsValue) {
-        getPortfolioByTitle(resultsValue.title); //(resultsValue._id)**
-        cardTemplate += `<div class="card">
-<input type="hidden" class="portfolioTitleValue" value="${resultsValue.title}">
-<h3 class="portfolioTitle">${resultsValue.title}</h3>
-<p class="portfolioDescription">${resultsValue.description}</p>
-<section id="portfolioWrap">
-<section id="portfolioStats">
-<p class="stocksOdd" id="stock1">AAPL <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 1.37%</p>
-<p class="stocksEven" id="stock2">GOOG <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> 3.09%</p>
-<p class="stocksOdd" id="stock3">BAC <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 5.3%</p>
-<p class="stocksEven" id="stock4">TSLA <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> 0.09%</p>
-<p class="stocksOdd" id="stock5">GS <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 4.7%</p>
-</section>
-<div id="addInvestment">
-<form class="newInvestmentForm">
-<input type="hidden" class="portfolioTitleValue" value="${resultsValue.title}">
-<legend>Add New Investment</legend>
-<fieldset>
-<label for="newStockTitle">Enter a stock symbol</label>
-<input type="search" id="stockSearch" placeholder="AAPL">
-</fieldset>
-<button type="submit" class="submit-button" id="addStock">Add Stock</button>
-<button type="button" class="cancelInvestment">Cancel</button>
-</form>
-<div class="stockSearchResults"></div>
-</div>
-<hr class="breakLine">
-<section id="portfolioCharts"></section>
-<div class="deletePortfolioButton">
-<button type='button' class="deletePortfolio">Delete Portfolio</button>
-</div>
-</div>
-</section>`;
+        getPortfolioById(resultsValue._id);
+        cardTemplate += '<div class="card">';
+        cardTemplate += `<input type="hidden" class="portfolioTitleValue" value="${resultsValue.title}">`;
+        cardTemplate += `<h3 class="portfolioTitle">${resultsValue.title}</h3>`;
+        cardTemplate += `<p class="portfolioDescription">${resultsValue.description}</p>`;
+        cardTemplate += '<section class="portfolioWrap">';
+        cardTemplate += '<section id="portfolioStats">';
+        //  NEED TO UPDATE THIS WITH TARGETS FOR SYMBOL AND NETCHANGE -- MARIUS if/else for arrows and stocks odd/even class will work?
+        cardTemplate += '<p class="stocksOdd" id="stock1">AAPL <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 1.37%</p>';
+        cardTemplate += '<p class="stocksEven" id="stock2">GOOG <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> 3.09%</p>';
+        cardTemplate += '</section>';
+        cardTemplate += '<div id="addInvestment">';
+        cardTemplate += '<form class="newInvestmentForm">';
+        cardTemplate += `<input type="hidden" class="portfolioIdValue" value="${resultsValue._id}">`;
+        cardTemplate += '<legend>Add New Investment</legend>';
+        cardTemplate += '<fieldset>';
+        cardTemplate += '<label for="newStockTitle">Enter a stock symbol</label>';
+        cardTemplate += '<input type="search" class="stockSearch" placeholder="AAPL">';
+        cardTemplate += '</fieldset>';
+        cardTemplate += '<button type="button" class="createNewInvestment">Get Stock</button>';
+        cardTemplate += '<button type="reset" class="cancelInvestment">Cancel</button>';
+        cardTemplate += '</form>';
+        cardTemplate += '<div class="stockSearchResults"></div>';
+        cardTemplate += '</div>';
+        cardTemplate += '<hr class = "breakLine">';
+        cardTemplate += '<section id="portfolioCharts"></section>';
+        cardTemplate += '<div class="deletePortfolioButton">';
+        cardTemplate += '<button type="button" class="deletePortfolio">Delete Portfolio</button>';
+        cardTemplate += '</div>';
+        cardTemplate += '</section>';
+        cardTemplate += '<section>';
+        cardTemplate += '<button class="showHide">Show/Hide</button>';
+        cardTemplate += '</section>';
+        cardTemplate += '</div>';
     });
     $("#portfolioSection").html(cardTemplate);
+    $('.portfolioWrap').hide();
 }
 
 function getLastPortfolio() {
     const portfolioTitle = $('.portfolioTitleValue').val();
 
     $.ajax({
-        type: 'GET',
-        url: '/portfolio/' + portfolioTitle,
-        dataType: 'json',
-        contentType: 'application/json'
-    })
-    //if call is succefull
+            type: 'GET',
+            url: '/portfolio/' + portfolioTitle,
+            dataType: 'json',
+            contentType: 'application/json'
+        })
+        //if call is succefull
         .done(function (result) {
-        console.log(result);
-        $('#portfolioDashboard').show();
+            console.log(result);
+            $('#portfolioDashboard').show();
 
-    })
-    //if the call is failing
+        })
+        //if the call is failing
         .fail(function (jqXHR, error, errorThrown) {
-        console.log(jqXHR);
-        console.log(error);
-        console.log(errorThrown);
-    });
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+        });
 }
-//MARIUS2
-function getPortfolioByTitle(portfolioTitle) {
+//MARIUS - is this right? see server.js 264
+function getPortfolioById(portfolioId) {
     $.ajax({
-        type: 'GET',
-        url: '/portfolio/' + portfolioTitle,
-        dataType: 'json',
-        contentType: 'application/json'
-    })
-    //if call is succefull
+            type: 'GET',
+            url: '/portfolio/' + portfolioId,
+            dataType: 'json',
+            contentType: 'application/json'
+        })
+        //if call is succefull
         .done(function (result) {
-        console.log(result);
-        //displayInvestments();
+            console.log(result);
+            //displayInvestments();
 
-    })
-    //if the call is failing
+        })
+        //if the call is failing
         .fail(function (jqXHR, error, errorThrown) {
-        console.log(jqXHR);
-        console.log(error);
-        console.log(errorThrown);
-    });
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+        });
 }
-//MARIUS3
-function displayInvestments(results){
-    investmentTemplateUp = `<p class="stocksOdd" >${results.symbol}<i class="fa fa-arrow-up" style="font-size:24px;color:green"></i>${results.percentChange}%</p>`;
-    investmentTemplateDown = `<p class="stocksEven" >${results.symbol}<i class="fa fa-arrow-down" style="font-size:24px;color:red"></i>${results.percentChange}%</p>`;
-    $.each(results, function () {
-        if (results.percentChange < 0) {
-            $('#portfolioStats').append(investmentTemplateDown);
-        } else if (results.percentChange > 0) {
-            $('#portfolioStats').append(investmentTemplateUp);
-        }
-    });
-}
+
+//MARIUS - this isn't working (no console/log/alert)
+$(document).on('click', '.showHide', function (event) {
+    console.log("hi");
+
+    $(this).parent().parent().find('.portfolioWrap').toggle();
+});
 
 $('#goToNewPortfolio').on('click', function (event) {
     $('#userDashboard').hide();
@@ -240,7 +236,8 @@ $('.loginForm').submit(event => {
                 $('#loginPage').hide();
                 //            $('#loggedInName').text(result.name);
                 $('#loggedInUserName').val(result.username);
-                getCardsByUser(result.username);
+                $('#loggedInUserId').val(result._id);
+                getCardsByUser(result._id);
                 //            htmlUserDashboard();
                 //            populateUserDashboardDate(result.username); //AJAX call in here??
                 //                noEntries();
@@ -266,6 +263,7 @@ $('.addPortfolioForm').submit(event => {
     const title = $("#newPortfolioTitle").val();
     const description = $("#newPortfolioDescription").val();
     const userName = $("#loggedInUserName").val();
+    const userId = $("#loggedInUserId").val();
 
 
     if (title == "") {
@@ -280,7 +278,8 @@ $('.addPortfolioForm').submit(event => {
         const entryObject = {
             title: title,
             description: description,
-            userName: userName
+            userName: userName,
+            userId: userId
         };
         console.log(entryObject);
 
@@ -298,8 +297,7 @@ $('.addPortfolioForm').submit(event => {
                 alert('You have successfully added a new portfolio');
                 $('#userDashboard').show();
                 $('#addPortfolio').hide();
-                getCardsByUser(userName);
-                //MARIUS1
+                getCardsByUser(userId);
                 $('.portfolioTitleValue').val(result.title);
             })
             //if the call is failing
@@ -321,11 +319,11 @@ $('.addPortfolioForm').submit(event => {
 
 $('.confirmDelete').on('click', function (event) {
 
-    //take the input from the user  === QUESTION ABOUT THIS FOR MARIUS!!!
-    //Marius where should inputPortfolioID be??
+    //take the input from the user
+    //Marius
     const portfolioId = $(this).parent().find('.inputPortfolioID').val();
     const loggedInUserName = $("#loggedInUserName").val();
-    const parentDiv = $(this).closest('.entries-container');
+    //const parentDiv = $(this).closest('.entries-container');
 
     //    console.log(currentForm, entryId);
     //    console.log(entryType, inputDate, inputPlay, inputAuthor, inputRole, inputCo, inputLocation, inputNotes);
@@ -333,7 +331,6 @@ $('.confirmDelete').on('click', function (event) {
     //make the api call using the payload above
     $.ajax({
             type: 'DELETE',
-            //=== Marius QUESTION ABOUT THIS TOO
             url: `/portfolio/${portfolioId}`,
             dataType: 'json',
             contentType: 'application/json'
@@ -358,10 +355,11 @@ $('.confirmDelete').on('click', function (event) {
 
 // ---------------Investment end points--------------------------
 //create a new investment
-$('.newInvestmentForm').submit(function (event) {
+$(document).on("click", '.createNewInvestment', function (event) {
     event.preventDefault();
-
-    const symbol = $("#stockSearch").val();
+    alert("hello");
+    const symbol = $(this).parent().find(".stockSearch").val();
+    const portfolioId = $(this).parent().find(".portfolioIdValue").val();
 
     if (symbol == "") {
         alert('Please input stock symbol');
@@ -371,7 +369,8 @@ $('.newInvestmentForm').submit(function (event) {
     else {
         //create the payload object (what data we send to the api call)
         const entryObject = {
-            symbol: symbol
+            symbol: symbol,
+            portfolioId: portfolioId
         };
         console.log(entryObject);
 

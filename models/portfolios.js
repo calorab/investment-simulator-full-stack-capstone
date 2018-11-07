@@ -7,7 +7,8 @@ const portfolioSchema = new mongoose.Schema({
     //should this be title and description rather than investments? Adding investments to a portfolio
     title: 'string',
     description: 'string',
-    userName: 'string'
+    userName: 'string',
+    userId: 'string'
     //investments CALEB Marius
 });
 

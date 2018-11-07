@@ -13,6 +13,7 @@
 <body>
     <!--   add in "welcome Paul" or something-->
     <input type="hidden" id="loggedInUserName" value="">
+    <input type="hidden" id="loggedInUserId" value="">
 
     <section id="banner">
         <header>
@@ -46,7 +47,7 @@
             </fieldset>
             <button type="submit" class="submit-button" id="loginButton">Sign In</button>
         </form>
-        <p>Need to <span id="goToHomepage">create an account</span>instead?</p>
+        <p>Need to <span id="goToHomepage">create an account</span> instead?</p>
     </div>
 
     <div class="page" id="userDashboard">
@@ -54,62 +55,9 @@
         <!--        add in image link -->
         <button id="goToNewPortfolio" type="button">+</button>
         <section id="portfolioSection">
-            <!--
-            <div class="card">
-                add to card template DONE
-                <input type="hidden" class="portfolioTitleValue" value=${portfolioTitle}>
-                <h3 class="portfolioTitle">Portfolio 1: Tech/Finance</h3>
-                <p class="portfolioDescription">Lorem ipsum dolor sit amet, ludus corrumpit ea duo. Te quem inermis aliquando nam, mundi fuisset mediocrem usu te. </p>
-                <button type="button">GO!</button>
-            </div>
-            <div class="p2">
-                <h3 class="portfolioTitle">Portfolio 2: A/B test - Healthcare</h3>
-                <p class="portfolioDescription">Lorem ipsum dolor sit amet, ludus corrumpit ea duo. Te quem inermis aliquando nam, mundi fuisset mediocrem usu te. </p>
-                <button type="submit">GO!</button>
-            </div>
-            <div class="p3">
-                <h3 class="portfolioTitle">Portfolio 3: A/B test - Manufacturing</h3>
-                <p class="portfolioDescription">Lorem ipsum dolor sit amet, ludus corrumpit ea duo. Te quem inermis aliquando nam, mundi fuisset mediocrem usu te. </p>
-                <button type="submit">GO!</button>
-            </div>
--->
+
         </section>
     </div>
-
-    <div class="page" id="portfolioDashboard">
-        <!--        need to add in name of portfolio here ++ same image below as above (plus sign in a circle or similar image)-->
-        <h2 class="portfolioName">Portfolio 1</h2>
-        <p class="description">This portfolio is heavy technology and finance stocks. I'm testing this combination vs portfolio 2 which is heavy healthcare stock.</p>
-        <button id="searchInvestments" style="background-image: "></button>
-<!--
-        <section id="portfolioStats">
-            <p class="stocksOdd" id="stock1">AAPL <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 1.37%</p>
-            <p class="stocksEven" id="stock2">GOOG <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> 3.09%</p>
-            <p class="stocksOdd" id="stock3">BAC <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 5.3%</p>
-            <p class="stocksEven" id="stock4">TSLA <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> 0.09%</p>
-            <p class="stocksOdd" id="stock5">GS <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 4.7%</p>
-        </section>
-        <div id="addInvestment">
-            <form class="newInvestmentForm">
-                <legend>Add New Investment</legend>
-                <fieldset>
-                    <label for="newStockTitle">Enter a stock symbol</label>
-                    <input type="search" id="stockSearch" placeholder="AAPL">
-                </fieldset>
-                <button type="submit" class="submit-button" id="addStock">Add Stock</button>
-                <button type="button" class="cancelInvestment">Cancel</button>
-            </form>
-            <div class="stockSearchResults"></div>
-        </div>
-        <hr class="breakLine">
-        <section id="portfolioCharts"></section>
-        <div class="deletePortfolioButton">
-            <button type='button' class="deletePortfolio">Delete Portfolio</button>
-        </div>
--->
-    </div>
-
-
 
     <div class="page" id="addPortfolio">
         <form class="addPortfolioForm">
@@ -124,20 +72,6 @@
         </form>
     </div>
 
-<!--
-    <div class="page" id="addInvestment">
-        <form class="newInvestmentForm">
-            <legend>Add New Investment</legend>
-            <fieldset>
-                <label for="newStockTitle">Enter a stock symbol</label>
-                <input type="search" id="stockSearch" placeholder="AAPL">
-            </fieldset>
-            <button type="submit" class="submit-button" id="addStock">Add Stock</button>
-            <button type="button" class="cancelInvestment">Cancel</button>
-        </form>
-        <div class="stockSearchResults"></div>
-    </div>
--->
 
     <script src="https://code.highcharts.com/highcharts.src.js"></script>
     <script src="https://code.highcharts.com/modules/series-label.js"></script>
