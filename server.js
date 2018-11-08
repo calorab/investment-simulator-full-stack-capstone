@@ -1,5 +1,5 @@
 const User = require('./models/user');
-const Investment = require('./models/investment');
+const Investment = require('./models/portfolios');
 const Portfolio = require('./models/portfolios');
 const bodyParser = require('body-parser');
 const config = require('./config');
@@ -72,10 +72,8 @@ let getFromBarchart = function (symbol) {
         path: "/getQuote.json?apikey=26a582762cf5be1605b1727afd385458&symbols=" + symbol,
         method: 'GET',
         headers: {
-            //            'Authorization': "EF26EC69-4C03-458F-9AD7-C33903A87CAB",
             'Content-Type': "application/json",
             'Port': 443
-            //            'User-Agent': 'Paw/3.1.2 (Macintosh; OS X/10.12.5) GCDHTTPRequest'
         }
     };
 
@@ -326,7 +324,7 @@ app.post('/investment/create', (req, res) => {
                 //Marius
                 $push: {
                     investments: {
-                        "symbol": item.symbol
+                        "symbol": item.symbol,
                     }
                 }
             }, function () {

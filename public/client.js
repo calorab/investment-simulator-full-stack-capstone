@@ -19,8 +19,8 @@ function addInvestment() {
         alert('You have successfully added a new Stock');
     });
 }
-//MARIUS- ln 38 "error" in the console
-function getCardsByUser(userId) {
+//MARIUS- where do I put the barchart GET request
+function getCardsByUser(userId, symbol) {
     console.log(userId);
     $.ajax({
             type: 'GET',
@@ -28,10 +28,27 @@ function getCardsByUser(userId) {
             dataType: 'json',
             contentType: 'application/json'
         })
-        //if call is succefull
+        //if the call is succefull
         .done(function (result) {
             console.log(result);
             displayCard(result);
+        })
+        //if the call is failing
+        .fail(function (jqXHR, error, errorThrown) {
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+        });
+
+    $.ajax({
+            type: 'GET',
+            url: '/barchart/' + symbol,
+            dataType: 'json',
+            contentType: 'application/json'
+        })
+        //if call is succefull
+        .done(function (result) {
+            console.log(result);
         })
         //if the call is failing
         .fail(function (jqXHR, error, errorThrown) {
@@ -45,7 +62,7 @@ function getCardsByUser(userId) {
 function displayCard(results) {
     let cardTemplate = "";
     $.each(results, function (resultsKey, resultsValue) {
-        getPortfolioById(resultsValue._id);
+        getPortfolioById(resultsValue._id, resultsValue.symbol);
         cardTemplate += '<div class="card">';
         cardTemplate += `<input type="hidden" class="portfolioTitleValue" value="${resultsValue.title}">`;
         cardTemplate += `<h3 class="portfolioTitle">${resultsValue.title}</h3>`;
@@ -53,8 +70,11 @@ function displayCard(results) {
         cardTemplate += '<section class="portfolioWrap">';
         cardTemplate += '<section id="portfolioStats">';
         //  NEED TO UPDATE THIS WITH TARGETS FOR SYMBOL AND NETCHANGE -- MARIUS if/else for arrows and stocks odd/even class will work?
-        cardTemplate += '<p class="stocksOdd" id="stock1">AAPL <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> 1.37%</p>';
-        cardTemplate += '<p class="stocksEven" id="stock2">GOOG <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> 3.09%</p>';
+        if (resultsValue.percentChange > 0) {
+            cardTemplate += `<p class="stock" >${resultsValue.symbol} <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> ${resultsValue.percentChange}%</p>`;
+        } else {
+            cardTemplate += `<p class="stock" >${resultsValue.symbol} <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> ${resultsValue.percentChange}%</p>`;
+        }
         cardTemplate += '</section>';
         cardTemplate += '<div id="addInvestment">';
         cardTemplate += '<form class="newInvestmentForm">';
@@ -84,6 +104,26 @@ function displayCard(results) {
     $('.portfolioWrap').hide();
 }
 
+//function getInvestmentsBySymbol(symbol) {
+//    $.ajax({
+//            type: 'GET',
+//            url: '/barchart/' + symbol,
+//            dataType: 'json',
+//            contentType: 'application/json'
+//        })
+//        //if call is succefull
+//        .done(function (result) {
+//            console.log(result);
+//
+//        })
+//        //if the call is failing
+//        .fail(function (jqXHR, error, errorThrown) {
+//            console.log(jqXHR);
+//            console.log(error);
+//            console.log(errorThrown);
+//        });
+//}
+
 function getLastPortfolio() {
     const portfolioTitle = $('.portfolioTitleValue').val();
 
@@ -106,7 +146,7 @@ function getLastPortfolio() {
             console.log(errorThrown);
         });
 }
-//MARIUS - is this right? see server.js 264
+
 function getPortfolioById(portfolioId) {
     $.ajax({
             type: 'GET',
@@ -128,7 +168,6 @@ function getPortfolioById(portfolioId) {
         });
 }
 
-//MARIUS - this isn't working (no console/log/alert)
 $(document).on('click', '.showHide', function (event) {
     console.log("hi");
 
@@ -141,14 +180,33 @@ $('#goToNewPortfolio').on('click', function (event) {
 });
 
 
-$('.deletePortfolio').on('click', function (event) {
-    let confirmDelete = `<div class="page" id="deletePortfolioPage">
-<p>Are you sure you want to delete this portfolio? This is permanent.</p>
-<button type="button" class="confirmDelete">Confirm</button>
-<button type="button" class="cancelDelete">Cancel</button>
-</div>`;
-    console.log(confirmDelete);
-    $('.deletePortfolioButton').html(confirmDelete);
+$(document).on("click", '.deletePortfolio', function (event) {
+    if (confirm("Are you sure you want to perminently delete this portfolio?")) {
+        //take the input from the user
+        const portfolioId = $(this).parent().parent().parent().find('.portfolioIdValue').val();
+        const loggedInUserName = $("#loggedInUserName").val();
+
+        console.log(portfolioId, loggedInUserName);
+        //make the api call using the payload above
+        $.ajax({
+                type: 'DELETE',
+                url: `/portfolio/${portfolioId}`,
+                dataType: 'json',
+                contentType: 'application/json'
+            })
+
+            //if call is succefull
+            .done(function (result) {
+                console.log(result);
+            })
+
+            //if the call is failing
+            .fail(function (jqXHR, error, errorThrown) {
+                console.log(jqXHR);
+                console.log(error);
+                console.log(errorThrown);
+            });
+    };
 });
 
 
@@ -234,13 +292,10 @@ $('.loginForm').submit(event => {
                 console.log(result);
                 $('#userDashboard').show();
                 $('#loginPage').hide();
-                //            $('#loggedInName').text(result.name);
                 $('#loggedInUserName').val(result.username);
                 $('#loggedInUserId').val(result._id);
                 getCardsByUser(result._id);
-                //            htmlUserDashboard();
-                //            populateUserDashboardDate(result.username); //AJAX call in here??
-                //                noEntries();
+                //                getInvestmentsBySymbol(result.symbol);
             })
             //if the call is failing
             .fail(function (jqXHR, error, errorThrown) {
@@ -310,47 +365,39 @@ $('.addPortfolioForm').submit(event => {
 });
 
 
-//Portfolio GET ****
-//$('#portfolioSection').on('click', 'button', function () {
-//    event.preventDefault();
+//$('.confirmDelete').on('click', function (event) {
 //
+//    //take the input from the user
+//    const portfolioId = $(this).parent().find('.inputPortfolioID').val();
+//    const loggedInUserName = $("#loggedInUserName").val();
+//    //const parentDiv = $(this).closest('.entries-container');
 //
+//    //    console.log(currentForm, entryId);
+//    //    console.log(entryType, inputDate, inputPlay, inputAuthor, inputRole, inputCo, inputLocation, inputNotes);
+//
+//    //make the api call using the payload above
+//    $.ajax({
+//            type: 'DELETE',
+//            url: `/portfolio/${portfolioId}`,
+//            dataType: 'json',
+//            contentType: 'application/json'
+//        })
+//
+//        //if call is succefull
+//        .done(function (result) {
+//            console.log(result);
+//            alert("Portfolio deleted");
+//            $('#portfolioDashboard').hide();
+//            $('#userDashboard').show();
+//        })
+//
+//        //if the call is failing
+//        .fail(function (jqXHR, error, errorThrown) {
+//            console.log(jqXHR);
+//            console.log(error);
+//            console.log(errorThrown);
+//        });
 //});
-
-$('.confirmDelete').on('click', function (event) {
-
-    //take the input from the user
-    //Marius
-    const portfolioId = $(this).parent().find('.inputPortfolioID').val();
-    const loggedInUserName = $("#loggedInUserName").val();
-    //const parentDiv = $(this).closest('.entries-container');
-
-    //    console.log(currentForm, entryId);
-    //    console.log(entryType, inputDate, inputPlay, inputAuthor, inputRole, inputCo, inputLocation, inputNotes);
-
-    //make the api call using the payload above
-    $.ajax({
-            type: 'DELETE',
-            url: `/portfolio/${portfolioId}`,
-            dataType: 'json',
-            contentType: 'application/json'
-        })
-
-        //if call is succefull
-        .done(function (result) {
-            console.log(result);
-            alert("Portfolio deleted");
-            $('#portfolioDashboard').hide();
-            $('#userDashboard').show();
-        })
-
-        //if the call is failing
-        .fail(function (jqXHR, error, errorThrown) {
-            console.log(jqXHR);
-            console.log(error);
-            console.log(errorThrown);
-        });
-});
 
 
 // ---------------Investment end points--------------------------
@@ -398,7 +445,9 @@ $(document).on("click", '.createNewInvestment', function (event) {
     };
 });
 
-//update an investment
+//Get an investment
+
+
 
 //delete an investment
 $('.deleteStock').on('click', function (event) {

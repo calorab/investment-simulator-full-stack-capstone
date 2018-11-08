@@ -2,7 +2,6 @@
 
 const mongoose = require('mongoose');
 
-
 const portfolioSchema = new mongoose.Schema({
     //should this be title and description rather than investments? Adding investments to a portfolio
     title: 'string',
@@ -13,5 +12,6 @@ const portfolioSchema = new mongoose.Schema({
 });
 
 const Portfolio = mongoose.model('Portfolio', portfolioSchema);
+
 
 module.exports = Portfolio;
