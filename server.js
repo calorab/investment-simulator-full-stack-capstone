@@ -282,7 +282,7 @@ app.get('/portfolio/:userId', function (req, res) {
 // deleting a  Portfolio by id
 
 app.delete('/portfolio/:id', function (req, res) {
-    Potfolio.findByIdAndRemove(req.params.id).exec().then(function (portfolio) {
+    Portfolio.findByIdAndRemove(req.params.id).exec().then(function (portfolio) {
         return res.status(204).end();
     }).catch(function (err) {
         return res.status(500).json({
@@ -374,8 +374,8 @@ app.get('/investment/:id', function (req, res) {
 });
 
 // DELETE ----------------------------------------
-// deleting an achievement by id
-app.delete('delete-from-portfolio/:id', function (req, res) {
+// deleting an achievement by id CALEB this endpoint could be wrong!!!
+app.delete('portfolio/:id', function (req, res) {
     Investment.findByIdAndRemove(req.params.id).exec().then(function (investment) {
         return res.status(204).end();
     }).catch(function (err) {

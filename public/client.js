@@ -19,7 +19,7 @@ function addInvestment() {
         alert('You have successfully added a new Stock');
     });
 }
-//MARIUS- where do I put the barchart GET request
+
 function getCardsByUser(userId, symbol) {
     console.log(userId);
     $.ajax({
@@ -39,30 +39,13 @@ function getCardsByUser(userId, symbol) {
             console.log(error);
             console.log(errorThrown);
         });
-
-    $.ajax({
-            type: 'GET',
-            url: '/barchart/' + symbol,
-            dataType: 'json',
-            contentType: 'application/json'
-        })
-        //if call is succefull
-        .done(function (result) {
-            console.log(result);
-        })
-        //if the call is failing
-        .fail(function (jqXHR, error, errorThrown) {
-            console.log(jqXHR);
-            console.log(error);
-            console.log(errorThrown);
-        });
 }
 
 
 function displayCard(results) {
     let cardTemplate = "";
     $.each(results, function (resultsKey, resultsValue) {
-        getPortfolioById(resultsValue._id, resultsValue.symbol);
+        getPortfolioById(resultsValue._id);
         cardTemplate += '<div class="card">';
         cardTemplate += `<input type="hidden" class="portfolioTitleValue" value="${resultsValue.title}">`;
         cardTemplate += `<h3 class="portfolioTitle">${resultsValue.title}</h3>`;
@@ -104,25 +87,25 @@ function displayCard(results) {
     $('.portfolioWrap').hide();
 }
 
-//function getInvestmentsBySymbol(symbol) {
-//    $.ajax({
-//            type: 'GET',
-//            url: '/barchart/' + symbol,
-//            dataType: 'json',
-//            contentType: 'application/json'
-//        })
-//        //if call is succefull
-//        .done(function (result) {
-//            console.log(result);
-//
-//        })
-//        //if the call is failing
-//        .fail(function (jqXHR, error, errorThrown) {
-//            console.log(jqXHR);
-//            console.log(error);
-//            console.log(errorThrown);
-//        });
-//}
+function getInvestmentsBySymbol(symbol) {
+    $.ajax({
+            type: 'GET',
+            url: '/barchart/' + symbol,
+            dataType: 'json',
+            contentType: 'application/json'
+        })
+        //if call is succefull
+        .done(function (result) {
+            console.log(result);
+
+        })
+        //if the call is failing
+        .fail(function (jqXHR, error, errorThrown) {
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+        });
+}
 
 function getLastPortfolio() {
     const portfolioTitle = $('.portfolioTitleValue').val();
@@ -198,6 +181,8 @@ $(document).on("click", '.deletePortfolio', function (event) {
             //if call is succefull
             .done(function (result) {
                 console.log(result);
+                window.location.reload();
+
             })
 
             //if the call is failing
@@ -216,6 +201,8 @@ $('.createAccountForm').submit(event => {
     //take the input from the user
     const username = $("#createUsername").val();
     const password = $("#createPassword").val();
+    //    const symbol = $(".stockSearch").val();
+    const symbol = $(this).parent().find(".stockSearch").val();
 
     //validate the input
     if (username == "") {
@@ -246,6 +233,7 @@ $('.createAccountForm').submit(event => {
                 $('#loggedInUserName').val(result.username);
                 alert('You have successfully created a new account');
                 $('#userDashboard').show();
+                getInvestmentsBySymbol(symbol);
                 //                    populateUserDashboardDate(result.username);
             })
             //if the call is failing
@@ -263,6 +251,8 @@ $('.loginForm').submit(event => {
     //take the input from the user
     const username = $("#loginUsername").val();
     const password = $("#loginPassword").val();
+    //    const symbol = $(".stockSearch").val();
+    const symbol = $(this).parent().find(".stockSearch").val();
 
     //validate the input
     if (username == "") {
@@ -295,6 +285,7 @@ $('.loginForm').submit(event => {
                 $('#loggedInUserName').val(result.username);
                 $('#loggedInUserId').val(result._id);
                 getCardsByUser(result._id);
+                getInvestmentsBySymbol(symbol);
                 //                getInvestmentsBySymbol(result.symbol);
             })
             //if the call is failing
@@ -433,6 +424,7 @@ $(document).on("click", '.createNewInvestment', function (event) {
             .done(function (result) {
                 console.log(result);
                 getLastPortfolio();
+                getInvestmentsBySymbol(symbol);
                 $('.addInvestment').hide();
                 alert('You have successfully added a new Investment');
             })
