@@ -43,6 +43,7 @@ function getCardsByUser(userId, symbol) {
 
 
 function displayCard(results) {
+    console.log(results);
     let cardTemplate = "";
     $.each(results, function (resultsKey, resultsValue) {
         getPortfolioById(resultsValue._id);
@@ -55,15 +56,17 @@ function displayCard(results) {
         //  NEED TO UPDATE THIS WITH TARGETS FOR SYMBOL AND NETCHANGE -- MARIUS if/else for arrows and stocks odd/even class will work?
         if (resultsValue.percentChange > 0) {
             cardTemplate += `<p class="stock" >${resultsValue.symbol} <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> ${resultsValue.percentChange}%</p>`;
-        } else {
+        } else if (resultsValue.percentChange <= 0) {
             cardTemplate += `<p class="stock" >${resultsValue.symbol} <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> ${resultsValue.percentChange}%</p>`;
+        } else {
+            cardTemplate += '';
         }
         cardTemplate += '</section>';
-        cardTemplate += '<div id="addInvestment">';
+        cardTemplate += '<div class="addInvestment">';
         cardTemplate += '<form class="newInvestmentForm">';
         cardTemplate += `<input type="hidden" class="portfolioIdValue" value="${resultsValue._id}">`;
         cardTemplate += '<legend>Add New Investment</legend>';
-        cardTemplate += '<fieldset>';
+        cardTemplate += '<fieldset class="fieldset">';
         cardTemplate += '<label for="newStockTitle">Enter a stock symbol</label>';
         cardTemplate += '<input type="search" class="stockSearch" placeholder="AAPL">';
         cardTemplate += '</fieldset>';
@@ -106,7 +109,7 @@ function getInvestmentsBySymbol(symbol) {
             console.log(errorThrown);
         });
 }
-
+//CALEB here display details
 function getLastPortfolio() {
     const portfolioTitle = $('.portfolioTitleValue').val();
 
@@ -286,7 +289,6 @@ $('.loginForm').submit(event => {
                 $('#loggedInUserId').val(result._id);
                 getCardsByUser(result._id);
                 getInvestmentsBySymbol(symbol);
-                //                getInvestmentsBySymbol(result.symbol);
             })
             //if the call is failing
             .fail(function (jqXHR, error, errorThrown) {
@@ -396,10 +398,10 @@ $('.addPortfolioForm').submit(event => {
 $(document).on("click", '.createNewInvestment', function (event) {
     event.preventDefault();
     alert("hello");
-    const symbol = $(this).parent().find(".stockSearch").val();
+    const investmentSymbol = $(this).parent().find(".stockSearch").val();
     const portfolioId = $(this).parent().find(".portfolioIdValue").val();
 
-    if (symbol == "") {
+    if (investmentSymbol == "") {
         alert('Please input stock symbol');
     }
 
@@ -407,7 +409,7 @@ $(document).on("click", '.createNewInvestment', function (event) {
     else {
         //create the payload object (what data we send to the api call)
         const entryObject = {
-            symbol: symbol,
+            investmentSymbol: investmentSymbol,
             portfolioId: portfolioId
         };
         console.log(entryObject);
@@ -424,8 +426,6 @@ $(document).on("click", '.createNewInvestment', function (event) {
             .done(function (result) {
                 console.log(result);
                 getLastPortfolio();
-                getInvestmentsBySymbol(symbol);
-                $('.addInvestment').hide();
                 alert('You have successfully added a new Investment');
             })
             //if the call is failing

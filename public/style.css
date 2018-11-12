@@ -90,11 +90,22 @@ stocksEven {
     background-color: RGBA(40, 108, 16, 0.4);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     display: 0 auto;
-    width: 55%;
+    width: 75%;
     margin: auto;
     margin-bottom: 40px;
+    padding: 10px;
     border: 2px;
     border-radius: 5px;
+}
+
+.newInvestmentForm {
+    padding: 10px;
+    text-align: center;
+}
+
+.fieldset {
+    border: 0px;
+    margin: 0px;
 }
 
 .portfolioTitle {
@@ -110,7 +121,7 @@ stocksEven {
 
 .portfolioDescription {
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 5px;
     padding-top: 15px;
     padding-bottom: 5px;
     padding-left: 5px;

@@ -1,5 +1,5 @@
 const User = require('./models/user');
-const Investment = require('./models/portfolios');
+const Investment = require('./models/investment');
 const Portfolio = require('./models/portfolios');
 const bodyParser = require('body-parser');
 const config = require('./config');
@@ -298,40 +298,49 @@ app.delete('/portfolio/:id', function (req, res) {
 // creating a new Investment
 app.post('/investment/create', (req, res) => {
     let investmentSymbol = req.body.investmentSymbol;
+    let portfolioId = req.body.portfolioId;
 
 
-    Investment.create({
-        investmentSymbol,
 
-    }, (err, item) => {
-        if (err) {
-            return res.status(500).json({
-                message: 'Internal Server Error'
-            });
-        }
-        if (item) {
-            return res.json(item);
-        }
-        portfolio.find(function (err, items) {
+    console.log(investmentSymbol);
+
+    //external api function call and response
+    let searchReq = getFromBarchart(investmentSymbol);
+
+    //get the data from the first api call
+    searchReq.on('end', function (portfolioDetailsOutput) {
+        console.log(portfolioDetailsOutput);
+
+        //After gettig data from API, save in the DB
+        Investment.create({
+            investmentSymbol,
+            portfolioId,
+            investmentPrice: portfolioDetailsOutput.results[0].lastPrice,
+            investmentChange: portfolioDetailsOutput.results[0].percentChange,
+            dateAndTime: portfolioDetailsOutput.results[0].tradeTimestamp
+        }, (err, addedPortfolioDataOutput) => {
+            console.log(addedPortfolioDataOutput);
             if (err) {
-                return res.status(404).json({
-                    message: 'Item not found.'
+                return res.status(500).json({
+                    message: 'Internal Server Error'
                 });
             }
-            portfolio.update({
-                _id: req.params.portfolioId
-            }, {
-                //Marius
-                $push: {
-                    investments: {
-                        "symbol": item.symbol,
-                    }
-                }
-            }, function () {
-                res.status(201).json(items);
-            });
+            if (addedPortfolioDataOutput) {
+                return res.json(addedPortfolioDataOutput);
+            }
         });
     });
+
+    //error handling
+    searchReq.on('error', function (code) {
+        res.sendStatus(code);
+    });
+
+
+
+
+
+
 });
 
 // PUT --------------------------------------
