@@ -20,7 +20,7 @@ function addInvestment() {
     });
 }
 
-function getCardsByUser(userId, symbol) {
+function getCardsByUser(userId) {
     console.log(userId);
     $.ajax({
             type: 'GET',
@@ -101,29 +101,6 @@ function getInvestmentsBySymbol(symbol) {
             console.log(errorThrown);
         });
 }
-//CALEB here display details
-//function getLastPortfolio() {
-//    const portfolioTitle = $('.portfolioTitleValue').val();
-//
-//    $.ajax({
-//            type: 'GET',
-//            url: '/portfolio/' + portfolioTitle,
-//            dataType: 'json',
-//            contentType: 'application/json'
-//        })
-//        //if call is succefull
-//        .done(function (result) {
-//            console.log(result);
-//            $('#portfolioDashboard').show();
-//
-//        })
-//        //if the call is failing
-//        .fail(function (jqXHR, error, errorThrown) {
-//            console.log(jqXHR);
-//            console.log(error);
-//            console.log(errorThrown);
-//        });
-//}
 
 function getPortfolioById(portfolioId) {
     console.log(portfolioId);
@@ -181,7 +158,7 @@ function getInvestmentByPortfolioId(portfolioId) {
 }
 
 $(document).on('click', '.showHide', function (event) {
-    console.log("hi");
+    event.preventDefault();
 
     $(this).parent().parent().find('.portfolioWrap').toggle();
 });
@@ -193,12 +170,13 @@ $('#goToNewPortfolio').on('click', function (event) {
 
 
 $(document).on("click", '.deletePortfolio', function (event) {
+    event.preventDefault();
     if (confirm("Are you sure you want to perminently delete this portfolio?")) {
         //take the input from the user
         const portfolioId = $(this).parent().parent().parent().find('.portfolioIdValue').val();
-        const loggedInUserName = $("#loggedInUserName").val();
+        const loggedInUserId = $("#loggedInUserId").val();
 
-        console.log(portfolioId, loggedInUserName);
+        console.log(portfolioId, loggedInUserId);
         //make the api call using the payload above
         $.ajax({
                 type: 'DELETE',
@@ -210,7 +188,8 @@ $(document).on("click", '.deletePortfolio', function (event) {
             //if call is succefull
             .done(function (result) {
                 console.log(result);
-                window.location.reload();
+                getCardsByUser(loggedInUserId);
+
 
             })
 
@@ -382,41 +361,6 @@ $('.addPortfolioForm').submit(event => {
             });
     };
 });
-
-
-//$('.confirmDelete').on('click', function (event) {
-//
-//    //take the input from the user
-//    const portfolioId = $(this).parent().find('.inputPortfolioID').val();
-//    const loggedInUserName = $("#loggedInUserName").val();
-//    //const parentDiv = $(this).closest('.entries-container');
-//
-//    //    console.log(currentForm, entryId);
-//    //    console.log(entryType, inputDate, inputPlay, inputAuthor, inputRole, inputCo, inputLocation, inputNotes);
-//
-//    //make the api call using the payload above
-//    $.ajax({
-//            type: 'DELETE',
-//            url: `/portfolio/${portfolioId}`,
-//            dataType: 'json',
-//            contentType: 'application/json'
-//        })
-//
-//        //if call is succefull
-//        .done(function (result) {
-//            console.log(result);
-//            alert("Portfolio deleted");
-//            $('#portfolioDashboard').hide();
-//            $('#userDashboard').show();
-//        })
-//
-//        //if the call is failing
-//        .fail(function (jqXHR, error, errorThrown) {
-//            console.log(jqXHR);
-//            console.log(error);
-//            console.log(errorThrown);
-//        });
-//});
 
 
 // ---------------Investment end points--------------------------
