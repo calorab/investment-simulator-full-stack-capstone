@@ -71,12 +71,9 @@ h2 {
     padding-bottom: 10px;
 }
 
-.stocksOdd {
-    background-color: whitesmoke;
-}
-
-stocksEven {
-    background-color: beige;
+.noStocks {
+    text-align: center;
+    font-size: 10px;
 }
 
 #portfolioSection {

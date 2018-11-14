@@ -278,6 +278,36 @@ app.get('/portfolio/:userId', function (req, res) {
         });
 });
 
+app.get('/portfolio-by-id/:portfolioId', function (req, res) {
+    Portfolio
+        .find({
+            _id: req.params.portfolioId
+        }).exec().then(function (portfolio) {
+            return res.json(portfolio);
+        })
+        .catch(function (portfolio) {
+            console.error(err);
+            res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        });
+});
+
+app.get('/investment-by-id/:portfolioId', function (req, res) {
+    Investment
+        .find({
+            portfolioId: req.params.portfolioId
+        }).exec().then(function (investment) {
+            return res.json(investment);
+        })
+        .catch(function (investment) {
+            console.error(err);
+            res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        });
+});
+
 // DELETE -----------------------------------------
 // deleting a  Portfolio by id
 

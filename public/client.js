@@ -52,15 +52,7 @@ function displayCard(results) {
         cardTemplate += `<h3 class="portfolioTitle">${resultsValue.title}</h3>`;
         cardTemplate += `<p class="portfolioDescription">${resultsValue.description}</p>`;
         cardTemplate += '<section class="portfolioWrap">';
-        cardTemplate += '<section id="portfolioStats">';
-        //  NEED TO UPDATE THIS WITH TARGETS FOR SYMBOL AND NETCHANGE -- MARIUS if/else for arrows and stocks odd/even class will work?
-        if (resultsValue.percentChange > 0) {
-            cardTemplate += `<p class="stock" >${resultsValue.symbol} <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> ${resultsValue.percentChange}%</p>`;
-        } else if (resultsValue.percentChange <= 0) {
-            cardTemplate += `<p class="stock" >${resultsValue.symbol} <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> ${resultsValue.percentChange}%</p>`;
-        } else {
-            cardTemplate += '';
-        }
+        cardTemplate += `<section id="portfolioStats${resultsValue._id}">`;
         cardTemplate += '</section>';
         cardTemplate += '<div class="addInvestment">';
         cardTemplate += '<form class="newInvestmentForm">';
@@ -110,19 +102,41 @@ function getInvestmentsBySymbol(symbol) {
         });
 }
 //CALEB here display details
-function getLastPortfolio() {
-    const portfolioTitle = $('.portfolioTitleValue').val();
+//function getLastPortfolio() {
+//    const portfolioTitle = $('.portfolioTitleValue').val();
+//
+//    $.ajax({
+//            type: 'GET',
+//            url: '/portfolio/' + portfolioTitle,
+//            dataType: 'json',
+//            contentType: 'application/json'
+//        })
+//        //if call is succefull
+//        .done(function (result) {
+//            console.log(result);
+//            $('#portfolioDashboard').show();
+//
+//        })
+//        //if the call is failing
+//        .fail(function (jqXHR, error, errorThrown) {
+//            console.log(jqXHR);
+//            console.log(error);
+//            console.log(errorThrown);
+//        });
+//}
 
+function getPortfolioById(portfolioId) {
+    console.log(portfolioId);
     $.ajax({
             type: 'GET',
-            url: '/portfolio/' + portfolioTitle,
+            url: '/portfolio-by-id/' + portfolioId,
             dataType: 'json',
             contentType: 'application/json'
         })
         //if call is succefull
         .done(function (result) {
             console.log(result);
-            $('#portfolioDashboard').show();
+            getInvestmentByPortfolioId(result[0]._id);
 
         })
         //if the call is failing
@@ -133,17 +147,29 @@ function getLastPortfolio() {
         });
 }
 
-function getPortfolioById(portfolioId) {
+function getInvestmentByPortfolioId(portfolioId) {
+    console.log(portfolioId);
     $.ajax({
             type: 'GET',
-            url: '/portfolio/' + portfolioId,
+            url: '/investment-by-id/' + portfolioId,
             dataType: 'json',
             contentType: 'application/json'
         })
-        //if call is succefull
+        //if call is succesfull
         .done(function (result) {
             console.log(result);
-            //displayInvestments();
+            let investmentTemplate = "";
+            $.each(result, function (resultsKey, resultsValue) {
+
+                if (resultsValue.investmentChange > 0) {
+                    investmentTemplate += `<p class="stock" >${resultsValue.investmentSymbol} <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> ${resultsValue.investmentChange}%</p>`;
+                } else if (resultsValue.investmentChange <= 0) {
+                    investmentTemplate += `<p class="stock" >${resultsValue.investmentSymbol} <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> ${resultsValue.investmentChange}%</p>`;
+                } else if (!(resultsValue.investmentChange)) {
+                    investmentTemplate += '<p class="noStocks">There are no stocks in this portfolio</p>';
+                }
+            });
+            $(`#portfolioStats${portfolioId}`).html(investmentTemplate);
 
         })
         //if the call is failing
@@ -397,7 +423,6 @@ $('.addPortfolioForm').submit(event => {
 //create a new investment
 $(document).on("click", '.createNewInvestment', function (event) {
     event.preventDefault();
-    alert("hello");
     const investmentSymbol = $(this).parent().find(".stockSearch").val();
     const portfolioId = $(this).parent().find(".portfolioIdValue").val();
 
@@ -425,8 +450,9 @@ $(document).on("click", '.createNewInvestment', function (event) {
             //if call is succefull
             .done(function (result) {
                 console.log(result);
-                getLastPortfolio();
-                alert('You have successfully added a new Investment');
+                $('#portfolioDashboard').show();
+                getPortfolioById(portfolioId);
+                //alert('You have successfully added a new Investment');
             })
             //if the call is failing
             .fail(function (jqXHR, error, errorThrown) {
