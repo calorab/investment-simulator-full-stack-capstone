@@ -139,9 +139,27 @@ function getInvestmentByPortfolioId(portfolioId) {
             $.each(result, function (resultsKey, resultsValue) {
 
                 if (resultsValue.investmentChange > 0) {
-                    investmentTemplate += `<p class="stock" >${resultsValue.investmentSymbol} <i class="fa fa-arrow-up" style="font-size:24px;color:green"></i> ${resultsValue.investmentChange}%</p>`;
+                    investmentTemplate += `<div>
+<input type="hidden" class="investmentId" value="${resultsValue._id}">
+<input type="hidden" class="portfolioId" value="${portfolioId}">
+<p class="stock" >
+${resultsValue.investmentSymbol}
+<i class="fa fa-arrow-up" style="font-size:24px;color:green"></i>
+${resultsValue.investmentChange}%
+</p>
+<button type="button" class="removeInvestment">X</button>
+</div>`;
                 } else if (resultsValue.investmentChange <= 0) {
-                    investmentTemplate += `<p class="stock" >${resultsValue.investmentSymbol} <i class="fa fa-arrow-down" style="font-size:24px;color:red"></i> ${resultsValue.investmentChange}%</p>`;
+                    investmentTemplate += `<div>
+<input type="hidden" class="investmentId" value="${resultsValue._id}">
+<input type="hidden" class="portfolioId" value="${portfolioId}">
+<p class="stock" >
+${resultsValue.investmentSymbol}
+<i class="fa fa-arrow-down" style="font-size:24px;color:red"></i>
+${resultsValue.investmentChange}%
+</p>
+<button type="button" class="removeInvestment">X</button>
+</div>`;
                 } else if (!(resultsValue.investmentChange)) {
                     investmentTemplate += '<p class="noStocks">There are no stocks in this portfolio</p>';
                 }
@@ -412,24 +430,26 @@ $(document).on("click", '.createNewInvestment', function (event) {
 
 
 //delete an investment
-$('.deleteStock').on('click', function (event) {
+$(document).on('click', '.removeInvestment', function (event) {
     event.preventDefault();
+    alert("Click works");
+    const investmentId = $(this).parent().find('.investmentId').val();
+    const portfolioId = $(this).parent().find('.portfolioId').val();
+
+    console.log(investmentId);
 
     $.ajax({
+            url: '/investment/' + investmentId,
             method: 'DELETE',
             dataType: 'json',
             contentType: 'application/json',
-            url: '/delete - from - portfolio /' + symbol,
         })
         .done(function (result) {
-            populateBucketListContainer();
-            populateBeenThereContainer();
-            sweetAlert('Removed!', 'Maybe next time...', 'success');
+            getPortfolioById(portfolioId);
         })
         .fail(function (jqXHR, error, errorThrown) {
             console.log(jqXHR);
             console.log(error);
             console.log(errorThrown);
-            sweetAlert('Oops...', 'Please try again', 'error');
         });
 });

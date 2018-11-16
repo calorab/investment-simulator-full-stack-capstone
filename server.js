@@ -413,8 +413,8 @@ app.get('/investment/:id', function (req, res) {
 });
 
 // DELETE ----------------------------------------
-// deleting an achievement by id CALEB this endpoint could be wrong!!!
-app.delete('portfolio/:id', function (req, res) {
+// deleting an investment by id CALEB
+app.delete('/investment/:id', function (req, res) {
     Investment.findByIdAndRemove(req.params.id).exec().then(function (investment) {
         return res.status(204).end();
     }).catch(function (err) {
