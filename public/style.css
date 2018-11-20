@@ -27,6 +27,13 @@ h1 {
     font-weight: 900;
 }
 
+/*CALEB*/
+
+button {
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
+
+}
+
 .tagLine,
 .description {
     margin-top: 0px;
@@ -35,6 +42,7 @@ h1 {
     padding-bottom: 50px;
     padding-top: 20px;
     padding-left: 15px;
+    text-align: center;
 }
 
 h2 {
@@ -62,23 +70,25 @@ h2 {
     border-radius: 2px;
 }
 
-.stocksOdd,
-.stocksEven {
-    padding-left: 15px;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: 10px;
-    padding-bottom: 10px;
+.loginForm {
+    margin-top: 114px;
 }
 
-.noStocks {
-    text-align: center;
-    font-size: 10px;
+.loginForm,
+.createAccountForm {
+    padding-bottom: 2px;
 }
 
 #portfolioSection {
     margin-top: 25px;
+}
 
+.deletePortfolioButton {
+    float: left;
+}
+
+.showHideSection {
+    text-align: left;
 }
 
 .card,
@@ -93,16 +103,44 @@ h2 {
     padding: 10px;
     border: 2px;
     border-radius: 5px;
+    text-align: center;
 }
 
 .newInvestmentForm {
     padding: 10px;
     text-align: center;
+    margin-top: 10px;
 }
 
-.fieldset {
-    border: 0px;
-    margin: 0px;
+#goToHomepage,
+#goToLogin {
+    color: blue;
+}
+
+#goToHomepage:hover,
+#goToLogin:hover {
+    color: green;
+    font-style: italic;
+}
+
+.homePageParagraph,
+.loginPageParagraph {
+    margin-bottom: 3px;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.stock {
+    display: inline;
+}
+
+.removeInvestment {
+    float: right;
+}
+
+fieldset {
+    margin: 2px;
+    margin-bottom: 3px;
 }
 
 .portfolioTitle {
@@ -131,4 +169,15 @@ h2 {
     max-width: 800px;
     height: 400px;
     margin: 0 auto
+}
+
+@media only screen and (min-width: 460px) {
+    .card {
+        width: 60%;
+    }
+
+    .loginForm,
+    .createAccountForm {
+        width: 300px;
+    }
 }

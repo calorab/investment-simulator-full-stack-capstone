@@ -73,7 +73,7 @@ function displayCard(results) {
         cardTemplate += '<button type="button" class="deletePortfolio">Delete Portfolio</button>';
         cardTemplate += '</div>';
         cardTemplate += '</section>';
-        cardTemplate += '<section>';
+        cardTemplate += '<section class="showHideSection">';
         cardTemplate += '<button class="showHide">Show/Hide</button>';
         cardTemplate += '</section>';
         cardTemplate += '</div>';
@@ -174,6 +174,16 @@ ${resultsValue.investmentChange}%
             console.log(errorThrown);
         });
 }
+
+$('#goToHomepage').on('click', function (event) {
+    hidePages();
+    $('#homePage').show();
+});
+
+$('#goToLogin').on('click', function (event) {
+    hidePages();
+    $('#loginPage').show();
+});
 
 $(document).on('click', '.showHide', function (event) {
     event.preventDefault();

@@ -1,80 +1,197 @@
+'use strict';
+
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const faker = require('faker');
+const mongoose = require('mongoose');
+const moment = require('moment');
+
+const User = require('./models/user');
+const Investment = require('./models/investment');
+const Portfolio = require('./models/portfolios');
 const {
     app,
     runServer,
     closeServer
 } = require('../server');
+const {
+    TEST_DATABASE_URL
+} = require('../config');
 
-var chai = require('chai');
-
-var chaiHttp = require('chai-http');
-
-var entry = require('../models/entry.js');
-
-var should = chai.should();
-
+const should = chai.should();
 chai.use(chaiHttp);
 
-describe('shakespeare-passport-node-capstone', function () {
-    it('should add an entry on POST', function () {
-        chai.request(app)
-            .post('/entry/create')
-            .send({
-                entryType: "performed",
-                inputDate: "2014-11-05T00:00:00.000Z",
-                inputPlay: "King Lear",
-                inputAuthor: "William Shakespeare",
-                inputRole: "Goneril",
-                inputCo: "Kingman Shakespeare Festival",
-                inputLocation: "Santa Barbara, CA",
-                inputNotes: "With A FORK!",
-                loggedInUserName: "paul.thomp@gmail.com"
-            })
-            .then(function (err, res) {
-                //should.equal(err, null);
-                res.should.have.status(201);
+
+// Create user to seed db and test create user
+function generateUser() {
+    return {
+        email: faker.internet.email(),
+        password: faker.internet.password()
+    }
+}
+
+function seedUserData() {
+    console.info('Seeding user data');
+    const seedData = [];
+
+    for (let i = 1; i < 10; i++) {
+        seedData.push(generateUser());
+    }
+    return User.insertMany(seedData);
+}
+
+
+function generateType() {
+    const type = ['insight', 'headspace', 'timer', 'unassisted'];
+    return type[Math.floor(Math.random() * type.length)];
+}
+
+const userId = faker.random.word();
+
+function generatePortfolioData() {
+
+
+    return {
+        title: faker.lorem.paragraph(),
+        description: faker.lorem.paragraph(),
+        userName: 'paul.thomp@gmail.com',
+        userId: '5bc91e7d9eff48629be02261'
+    }
+}
+
+// Seed portfolio Data
+function seedPortfolioData() {
+    console.info('Seeding portfolio data');
+    const seedData = [];
+
+    for (let i = 1; i <= 10; i++) {
+        seedData.push(generatePortfolioData());
+    }
+    console.log(seedData);
+
+
+    return Portfolio.insertMany(seedData);
+}
+
+// Tear down Database after each test
+function tearDownDb() {
+    return new Promise((resolve, reject) => {
+        console.warn('Deleting database');
+        mongoose.connection.dropDatabase()
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+    });
+}
+
+// --------------- Test User Endpoints ---------------
+
+describe('User API resource', function () {
+
+    before(function () {
+        return runServer(TEST_DATABASE_URL)
+            .then(console.log('Running server'))
+            .catch(err => console.log({
+                err
+            }));
+    });
+
+    beforeEach(function () {
+        return seedUserData();
+    });
+
+    // Test create a new user
+    it('should create a new user', function () {
+        const newUser = generateUser();
+        return chai.request(app)
+            .post('/users/create')
+            .send(newUser)
+            .then(function (res) {
+                res.should.have.status(200);
                 res.should.be.json;
-                res.body.should.be.a('object');
-                done();
-            })
+                res.body.should.include.keys('email', 'password');
+                res.body.email.should.equal(newUser.email);
+                res.body.password.should.not.equal(newUser.password);
+                res.body._id.should.not.be.null;
+            });
+    });
+
+
+    afterEach(function () {
+        return tearDownDb();
+    });
+
+    after(function () {
+        return closeServer();
+    });
+});
+
+
+// --------------- Test Portfolio Endpoints ---------------
+
+describe('Portfolio API resource', function () {
+
+    before(function () {
+        return runServer(TEST_DATABASE_URL)
+            .then(console.log('Running server'))
             .catch(err => console.log({
                 err
             }));
     });
-    it('Should Update an entry', function () {
-        chai.request(app)
-            .put('/entry/:id') //<-------????? Put request to '/entry/:id'
+
+    beforeEach(function () {
+        return seedPortfolioData();
+    });
+
+    // Test create a new portfolio
+    it('should create a new portfolio', function () {
+        const newPortfolio = generatePortfolioData();
+        return chai.request(app)
+            .post('/portfolio/create')
+            .send(newPortfolio)
             .then(function (res) {
-                res.should.have.status(201);
-                done();
-            })
-            .catch(err => console.log({
-                err
-            }));
-    });
-    it('Should Delete an entry', function () {
-
-        chai.request(app)
-            .delete('/entry/:id')
-            .then(function (res) {
-                res.should.have.status(201);
-                done();
-            })
-            .catch(err => console.log({
-                err
-            }));
-
-    });
-    it('Should Get All Users entries', function () {
-
-        chai.request(app)
-            .get('/entry-date/:user') //<-------????? Get request to '/entry-date/:user'
-            .then(function (res) {
-                res.should.have.status(201);
-                done();
-            })
-            .catch(err => console.log({
-                err
-            }));
+                console.log(res);
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.include.keys(
+                    'title',
+                    'description',
+                    'userName',
+                    'userId');
+                //                res.body.loggedInUserId.should.equal(newPortfolio.loggedInUserId);
+                //                res.body.portfolioDate.should.equal(newPortfolio.portfolioDate);
+                //                res.body.portfolioDateUnix.should.equal(newPortfolio.portfolioDateUnix);
+                //                res.body.portfolioTime.should.equal(newPortfolio.portfolioTime);
+                //                res.body.portfolioType.should.equal(newPortfolio.portfolioType);
+                //                res.body.journalEntry.should.equal(newPortfolio.journalEntry);
+                res.body._id.should.not.be.null;
+            });
     });
 
+    //CALEB  example delete !!!
+    describe('DELETE endpoint', function () {
+        it('should delete an achievement by ID', function () {
+            let achievement;
+            return Achievement
+                .findOne()
+                .then(function (_achievement) {
+                    achievement = _achievement;
+                    return chai.request(app).delete(`/achievement/${achievement.id}`);
+                })
+                .then(function (res) {
+                    res.should.have.status(204);
+                    return Achievement.findById(achievement.id);
+                })
+                .then(function (_achievement) {
+                    should.not.exist(_achievement);
+                });
+        });
+    });
+
+    afterEach(function () {
+        return tearDownDb();
+    });
+
+    after(function () {
+        return closeServer();
+    });
 });
