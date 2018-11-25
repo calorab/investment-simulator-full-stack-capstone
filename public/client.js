@@ -1,7 +1,7 @@
 //trigger for when the page loads
 $(function () {
     hidePages();
-
+    //take hidden fields related to unvestments and update
     $('#loginPage').show();
 });
 
@@ -69,7 +69,7 @@ function displayCard(results) {
         cardTemplate += '</div>';
         cardTemplate += '<hr class = "breakLine">';
         cardTemplate += '<section id="portfolioCharts"></section>';
-        cardTemplate += '<div class="deletePortfolioButton">';
+        cardTemplate += '<div class="button">';
         cardTemplate += '<button type="button" class="deletePortfolio">Delete Portfolio</button>';
         cardTemplate += '</div>';
         cardTemplate += '</section>';
@@ -137,7 +137,7 @@ function getInvestmentByPortfolioId(portfolioId) {
             console.log(result);
             let investmentTemplate = "";
             $.each(result, function (resultsKey, resultsValue) {
-
+                //                createInvestment(resultsValue.investmentSymbol, portfolioId);
                 if (resultsValue.investmentChange > 0) {
                     investmentTemplate += `<div>
 <input type="hidden" class="investmentId" value="${resultsValue._id}">
@@ -196,6 +196,11 @@ $('#goToNewPortfolio').on('click', function (event) {
     $('#addPortfolio').show();
 });
 
+$('.cancelAddPortfolio').on('click', function (event) {
+    hidePages();
+    $('#userDashboard').show();
+});
+
 
 $(document).on("click", '.deletePortfolio', function (event) {
     event.preventDefault();
@@ -217,8 +222,6 @@ $(document).on("click", '.deletePortfolio', function (event) {
             .done(function (result) {
                 console.log(result);
                 getCardsByUser(loggedInUserId);
-
-
             })
 
             //if the call is failing
@@ -322,6 +325,7 @@ $('.loginForm').submit(event => {
                 $('#loggedInUserId').val(result._id);
                 getCardsByUser(result._id);
                 getInvestmentsBySymbol(symbol);
+
             })
             //if the call is failing
             .fail(function (jqXHR, error, errorThrown) {
@@ -404,38 +408,40 @@ $(document).on("click", '.createNewInvestment', function (event) {
 
     //if the input is valid
     else {
-        //create the payload object (what data we send to the api call)
-        const entryObject = {
-            investmentSymbol: investmentSymbol,
-            portfolioId: portfolioId
-        };
-        console.log(entryObject);
-
-        //make the api call using the payload above
-        $.ajax({
-                type: 'POST',
-                url: '/investment/create',
-                dataType: 'json',
-                data: JSON.stringify(entryObject),
-                contentType: 'application/json'
-            })
-            //if call is succefull
-            .done(function (result) {
-                console.log(result);
-                $('#portfolioDashboard').show();
-                getPortfolioById(portfolioId);
-                //alert('You have successfully added a new Investment');
-            })
-            //if the call is failing
-            .fail(function (jqXHR, error, errorThrown) {
-                console.log(jqXHR);
-                console.log(error);
-                console.log(errorThrown);
-            });
+        createInvestment(investmentSymbol, portfolioId);
     };
 });
 
-//Get an investment
+function createInvestment(investmentSymbol, portfolioId) {
+    //create the payload object (what data we send to the api call)
+    const entryObject = {
+        investmentSymbol: investmentSymbol,
+        portfolioId: portfolioId
+    };
+    console.log(entryObject);
+
+    //make the api call using the payload above
+    $.ajax({
+            type: 'POST',
+            url: '/investment/create',
+            dataType: 'json',
+            data: JSON.stringify(entryObject),
+            contentType: 'application/json'
+        })
+        //if call is succefull
+        .done(function (result) {
+            console.log(result);
+            $('#portfolioDashboard').show();
+            getPortfolioById(portfolioId);
+            //alert('You have successfully added a new Investment');
+        })
+        //if the call is failing
+        .fail(function (jqXHR, error, errorThrown) {
+            console.log(jqXHR);
+            console.log(error);
+            console.log(errorThrown);
+        });
+}
 
 
 

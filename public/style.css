@@ -27,11 +27,32 @@ h1 {
     font-weight: 900;
 }
 
+legend,
+label {
+    color: white;
+}
+
 /*CALEB*/
 
 button {
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
+    background-color: RGBA(129, 82, 230, 0.75);
+    color: white;
+    border-radius: 4px;
+    border: 0px;
+}
 
+.deletePortfolioButton,
+.showHide {
+
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#goToNewPortfolio {
+    border-radius: 15px;
+    font-size: 20px;
+    margin-left: 10px;
 }
 
 .tagLine,
@@ -59,18 +80,22 @@ h2 {
 .loginForm,
 .addPortfolioForm,
 .newInvestmentForm {
-    background-color: RGBA(40, 108, 161, 0.5);
+    background-color: RGBA(48, 26, 181, 1);
+    opacity: 0.8;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     display: 0 auto;
-    width: 65%;
+    width: 75%;
     height: auto;
     margin: auto;
+    margin-left: auto;
+    margin-right: auto;
     padding: 20px;
     border: 1px;
-    border-radius: 2px;
+    border-radius: 4px;
 }
 
-.loginForm {
+.loginForm,
+.addPortfolioForm {
     margin-top: 114px;
 }
 
@@ -83,7 +108,7 @@ h2 {
     margin-top: 25px;
 }
 
-.deletePortfolioButton {
+.button {
     float: left;
 }
 
@@ -114,7 +139,7 @@ h2 {
 
 #goToHomepage,
 #goToLogin {
-    color: blue;
+    color: white;
 }
 
 #goToHomepage:hover,
@@ -134,13 +159,19 @@ h2 {
     display: inline;
 }
 
+
 .removeInvestment {
     float: right;
+    /*    MARIUS how to get it to float left */
+    margin-left: 125px;
 }
 
-fieldset {
+.fieldset {
     margin: 2px;
     margin-bottom: 3px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 75%;
 }
 
 .portfolioTitle {
@@ -179,5 +210,11 @@ fieldset {
     .loginForm,
     .createAccountForm {
         width: 300px;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    .newInvestmentForm {
+        width: 85%;
     }
 }

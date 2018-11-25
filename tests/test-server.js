@@ -169,20 +169,91 @@ describe('Portfolio API resource', function () {
 
     //CALEB  example delete !!!
     describe('DELETE endpoint', function () {
-        it('should delete an achievement by ID', function () {
-            let achievement;
-            return Achievement
+        it('should delete an portfolio by ID', function () {
+            let portfolio;
+            return Portfolio
                 .findOne()
-                .then(function (_achievement) {
-                    achievement = _achievement;
-                    return chai.request(app).delete(`/achievement/${achievement.id}`);
+                .then(function (_portfolio) {
+                    portfolio = _portfolio;
+                    return chai.request(app).delete(`/portfolio/${portfolio.id}`);
                 })
                 .then(function (res) {
                     res.should.have.status(204);
-                    return Achievement.findById(achievement.id);
+                    return Portfolio.findById(portfolio.id);
                 })
-                .then(function (_achievement) {
-                    should.not.exist(_achievement);
+                .then(function (_portfolio) {
+                    should.not.exist(_portfolio);
+                });
+        });
+    });
+
+    afterEach(function () {
+        return tearDownDb();
+    });
+
+    after(function () {
+        return closeServer();
+    });
+});
+
+// --------------- Test Investment Endpoints ---------------
+
+describe('Investment API resource', function () {
+
+    before(function () {
+        return runServer(TEST_DATABASE_URL)
+            .then(console.log('Running server'))
+            .catch(err => console.log({
+                err
+            }));
+    });
+
+    //MARIUS
+    beforeEach(function () {
+        return seedPortfolioData();
+    });
+
+    // Test create a new portfolio
+    it('should create a new Investment', function () {
+        const newInvestment = generatePortfolioData();
+        return chai.request(app)
+            .post('/investment/create')
+            .send(newInvestment)
+            .then(function (res) {
+                console.log(res);
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.include.keys(
+                    'investmentSymbol',
+                    'portfolioId',
+                    'userName',
+                    'userId');
+                //                res.body.loggedInUserId.should.equal(newPortfolio.loggedInUserId);
+                //                res.body.portfolioDate.should.equal(newPortfolio.portfolioDate);
+                //                res.body.portfolioDateUnix.should.equal(newPortfolio.portfolioDateUnix);
+                //                res.body.portfolioTime.should.equal(newPortfolio.portfolioTime);
+                //                res.body.portfolioType.should.equal(newPortfolio.portfolioType);
+                //                res.body.journalEntry.should.equal(newPortfolio.journalEntry);
+                res.body._id.should.not.be.null;
+            });
+    });
+
+    //CALEB  example delete !!!
+    describe('DELETE investment endpoint', function () {
+        it('should delete an investment by ID', function () {
+            let investment;
+            return Investment
+                .findOne()
+                .then(function (_investment) {
+                    investment = _investment;
+                    return chai.request(app).delete(`/investment/${investment.id}`);
+                })
+                .then(function (res) {
+                    res.should.have.status(204);
+                    return Investment.findById(investment.id);
+                })
+                .then(function (_investment) {
+                    should.not.exist(_investment);
                 });
         });
     });
