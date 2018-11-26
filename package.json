@@ -1,7 +1,7 @@
 {
-    "name": "shakespeare-passport-node-capstone",
+    "name": "investment-simulator-capstone",
     "version": "1.0.0",
-    "description": "The Shakespeare Passport app is designed for Theatrical Performers, Theatre Goers, and Theatre enthusiast alike. It allows a User to compile a list of plays by SEEN, PERFORMED, and READ tracking date and location.",
+    "description": "The Investment Simulator app is the best way to test and learn investing without risking any money. Through the app you can create portfolios, add and remove investments and see up to date prices in US stocks. Come see how you would fair against Wallstreet.",
     "main": "server.js",
     "dependencies": {
         "bcrypt": "^0.8.7",
@@ -29,12 +29,12 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/KatiLong/shakespeare-passport-node-capstone.git"
+        "url": "git+https://github.com/calorab/investment-simulator-full-stack-capstone.git"
     },
-    "author": "Kati Long",
+    "author": "Caleb Gammon",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/KatiLong/shakespeare-passport-node-capstone/issues"
+        "url": "https://github.com/calorab/investment-simulator-full-stack-capstone/issues"
     },
-    "homepage": "https://github.com/KatiLong/shakespeare-passport-node-capstone#readme"
+    "homepage": "https://github.com/calorab/investment-simulator-full-stack-capstone#readme"
 }
