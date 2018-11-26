@@ -32,8 +32,6 @@ label {
     color: white;
 }
 
-/*CALEB*/
-
 button {
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
     background-color: RGBA(129, 82, 230, 0.75);
@@ -162,8 +160,6 @@ h2 {
 
 .removeInvestment {
     float: right;
-    /*    MARIUS how to get it to float left */
-    margin-left: 125px;
 }
 
 .fieldset {

@@ -13,9 +13,8 @@ const express = require('express');
 const https = require('https');
 const http = require('http');
 
-// testing changes
 
-//Need to add these to package.json **
+//MARIUS - Need to add these to package.json **
 var unirest = require('unirest');
 var events = require('events');
 
@@ -27,7 +26,7 @@ app.use(express.static('public'));
 mongoose.Promise = global.Promise;
 
 // ---------------- RUN/CLOSE SERVER -----------------------------------------------------
-let server = undefined;
+let server;
 
 function runServer(urlToUse) {
     return new Promise((resolve, reject) => {
@@ -93,7 +92,6 @@ let getFromBarchart = function (symbol) {
 };
 
 //local API endpont communicating with the external api endpoint
-//localhost:8080/barchart/AAPL
 app.get('/barchart/:symbol', function (req, res) {
 
 

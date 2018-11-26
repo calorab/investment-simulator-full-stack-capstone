@@ -2,7 +2,7 @@
 $(function () {
     hidePages();
     //take hidden fields related to unvestments and update
-    $('#loginPage').show();
+    $('#homePage').show();
 });
 
 
@@ -273,7 +273,6 @@ $('.createAccountForm').submit(event => {
                 alert('You have successfully created a new account');
                 $('#userDashboard').show();
                 getInvestmentsBySymbol(symbol);
-                //                    populateUserDashboardDate(result.username);
             })
             //if the call is failing
             .fail(function (jqXHR, error, errorThrown) {
@@ -290,7 +289,6 @@ $('.loginForm').submit(event => {
     //take the input from the user
     const username = $("#loginUsername").val();
     const password = $("#loginPassword").val();
-    //    const symbol = $(".stockSearch").val();
     const symbol = $(this).parent().find(".stockSearch").val();
 
     //validate the input
@@ -433,7 +431,6 @@ function createInvestment(investmentSymbol, portfolioId) {
             console.log(result);
             $('#portfolioDashboard').show();
             getPortfolioById(portfolioId);
-            //alert('You have successfully added a new Investment');
         })
         //if the call is failing
         .fail(function (jqXHR, error, errorThrown) {
@@ -448,7 +445,6 @@ function createInvestment(investmentSymbol, portfolioId) {
 //delete an investment
 $(document).on('click', '.removeInvestment', function (event) {
     event.preventDefault();
-    alert("Click works");
     const investmentId = $(this).parent().find('.investmentId').val();
     const portfolioId = $(this).parent().find('.portfolioId').val();
 

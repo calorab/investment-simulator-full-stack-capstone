@@ -6,9 +6,9 @@ const faker = require('faker');
 const mongoose = require('mongoose');
 const moment = require('moment');
 
-const User = require('./models/user');
-const Investment = require('./models/investment');
-const Portfolio = require('./models/portfolios');
+const User = require('../models/user');
+const Investment = require('../models/investment');
+const Portfolio = require('../models/portfolios');
 const {
     app,
     runServer,
@@ -38,12 +38,6 @@ function seedUserData() {
         seedData.push(generateUser());
     }
     return User.insertMany(seedData);
-}
-
-
-function generateType() {
-    const type = ['insight', 'headspace', 'timer', 'unassisted'];
-    return type[Math.floor(Math.random() * type.length)];
 }
 
 const userId = faker.random.word();
@@ -157,12 +151,6 @@ describe('Portfolio API resource', function () {
                     'description',
                     'userName',
                     'userId');
-                //                res.body.loggedInUserId.should.equal(newPortfolio.loggedInUserId);
-                //                res.body.portfolioDate.should.equal(newPortfolio.portfolioDate);
-                //                res.body.portfolioDateUnix.should.equal(newPortfolio.portfolioDateUnix);
-                //                res.body.portfolioTime.should.equal(newPortfolio.portfolioTime);
-                //                res.body.portfolioType.should.equal(newPortfolio.portfolioType);
-                //                res.body.journalEntry.should.equal(newPortfolio.journalEntry);
                 res.body._id.should.not.be.null;
             });
     });
@@ -179,7 +167,7 @@ describe('Portfolio API resource', function () {
                 })
                 .then(function (res) {
                     res.should.have.status(204);
-                    return Portfolio.findById(portfolio.id);
+                    return Portfolio.findById(portfolio._id)
                 })
                 .then(function (_portfolio) {
                     should.not.exist(_portfolio);
@@ -250,7 +238,7 @@ describe('Investment API resource', function () {
                 })
                 .then(function (res) {
                     res.should.have.status(204);
-                    return Investment.findById(investment.id);
+                    return Investment.findById(investment._id)
                 })
                 .then(function (_investment) {
                     should.not.exist(_investment);
