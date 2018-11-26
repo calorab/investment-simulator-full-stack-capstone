@@ -3,15 +3,13 @@
 The Investment Simulator app is the best way to test and learn investing without risking any money. Through the app you can create portfolios, add and remove investments, try different investment strategies and track how much money you would have made. See up to date prices, invest in US stocks, bonds, gold and indexes and see how you would fair against Wallstreet.
 ## Screenshots
 
-Home Page View | Login Page View #2
+Home Page View | Login Page View
 :-------------------------:|:-------------------------:
-![Home Page](https://github.com/KatiLong/shakespeare-passport-node-capstone/blob/master/github-images/home-page.jpg)  |  ![Login Page](https://github.com/KatiLong/shakespeare-passport-node-capstone/blob/master/github-images/login.jpg)
-User Dashboard | Seen Entry
-![User Dashboard](https://github.com/KatiLong/shakespeare-passport-node-capstone/blob/master/github-images/user-dashboard.jpg) | ![Seen Entry](https://github.com/KatiLong/shakespeare-passport-node-capstone/blob/master/github-images/seen-entry.jpg)
-Add Entry  | Edit Entry
-![Add Entry](https://github.com/KatiLong/shakespeare-passport-node-capstone/blob/master/github-images/add-entry.jpg) | ![Edit Entry](https://github.com/KatiLong/shakespeare-passport-node-capstone/blob/master/github-images/edit-entry.jpg)
-Delete Entry |
-![Delete Entry](https://github.com/KatiLong/shakespeare-passport-node-capstone/blob/master/github-images/delete-entry.jpg) |
+![Home Page](https://github.com/investment-simulator-full-stack-capstone/github-images/Investment Simulator Node Capstone - Homepage.png)  |
+![Login Page](https://github.com/investment-simulator-full-stack-capstone/github-images/Investment Simulator Node Capstone - Login Page.png)
+User Dashboard | Add Portfolio page
+![User Dashboard](https://github.com/investment-simulator-full-stack-capstone/github-images/Investment Simulator Node Capstone - Dashboard.png) | ![Add portfolio page](https://github.com/investment-simulator-full-stack-capstone/github-images/Investment Simulator Node Capstone - Add Portfolio Page.png)
+
 
 ## User Cases
 I picture this app being used by three types of users:
@@ -20,10 +18,10 @@ I picture this app being used by three types of users:
 3.  Lastly I think this app could be fun for those who are just looking to see how they perform in the world's biggest markets.
 
 ### UI Flow
-![UI Flow handwritten draft](https://github.com/KatiLong/node-capstone/blob/master/github-images/node-capstone-user-flow.jpg)
+![UI Flow handwritten draft](https://github.com/investment-simulator-full-stack-capstone/github-images/UI-user flow.jpg)
 
 ### Wireframe _main
-![Wireframe _Main](https://github.com/KatiLong/node-capstone/blob/master/github-images/wireframe-v1.jpg)
+![Wireframe _Main](https://github.com/investment-simulator-full-stack-capstone/github-images/UI-Wireframe.jpg)
 
 ## Working Prototype
 You can access a working prototype of the app here: _FILL IN LINK HERE!!!!
@@ -32,7 +30,7 @@ You can access a working prototype of the app here: _FILL IN LINK HERE!!!!
 The app's functionality includes:
 * Every User has the ability to create an account with multiple portfolios of investments to track
 * Users can add individual investments, remove investments, and add and remove portfolios
-* Users can choose different investment strategies to run on their portfolios
+
 
 ## Technology
 * Front-End: HTML5 | CSS3 | JavaScript ES6 | jQuery
@@ -45,4 +43,5 @@ App is strongly built to be usuable on mobile devices, as well as responsive acr
 
 ## Development Roadmap
 This is v1.0 of the app, but future enhancements are expected to include:
-* _ADD IN FUTURE UPDATES!!!!
+* Ablity to chart prices over time to track gains.
+* Add in additional investment like bonds, funds, and futures.

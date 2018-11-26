@@ -35,12 +35,13 @@ function runServer(urlToUse) {
                 return reject(err);
             }
             server = app.listen(config.PORT, () => {
-                console.log(`Listening on localhost:${config.PORT}`);
-                resolve();
-            }).on('error', err => {
-                mongoose.disconnect();
-                reject(err);
-            });
+                    console.log(`Listening on localhost:${config.PORT}`);
+                    resolve();
+                })
+                .on('error', err => {
+                    mongoose.disconnect();
+                    reject(err);
+                });
         });
     });
 }
