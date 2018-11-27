@@ -241,7 +241,7 @@ $('.createAccountForm').submit(event => {
     const username = $("#createUsername").val();
     const password = $("#createPassword").val();
     const symbol = $(this).parent().find(".stockSearch").val();
-    //    const loggedInUserId = $("#loggedInUserId").val();
+    const loggedInUserId = $("#loggedInUserId").val();
 
     console.log(loggedInUserId);
     //validate the input
@@ -273,8 +273,8 @@ $('.createAccountForm').submit(event => {
                 alert('You have successfully created a new account');
                 hidePages();
                 $('#userDashboard').show();
-                //CALEB 11/27 noon
-                getCardsByUser();
+                //CALEB 11/27 1:33
+                getCardsByUser(result._id);
                 getInvestmentsBySymbol(symbol);
             })
             //if the call is failing
@@ -382,7 +382,7 @@ $('.addPortfolioForm').submit(event => {
                 alert('You have successfully added a new portfolio');
                 $('#userDashboard').show();
                 $('#addPortfolio').hide();
-                getCardsByUser(userId);
+                getCardsByUser(result._id);
                 $('.portfolioTitleValue').val(result.title);
             })
             //if the call is failing
