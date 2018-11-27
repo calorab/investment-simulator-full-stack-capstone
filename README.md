@@ -5,10 +5,10 @@ The Investment Simulator app is the best way to test and learn investing without
 
 Home Page View | Login Page View
 :-------------------------:|:-------------------------:
-![Home Page](https://github.com/investment-simulator-full-stack-capstone/github-images/Investment Simulator Node Capstone - Homepage.png)  |
-![Login Page](https://github.com/investment-simulator-full-stack-capstone/github-images/Investment Simulator Node Capstone - Login Page.png)
+![Home Page](https://github.com/calorab/investment-simulator-full-stack-capstone/blob/master/github-images/Investment%20Simulator%20Node%20Capstone%20-%20Homepage.png)  |
+![Login Page](https://github.com/calorab/investment-simulator-full-stack-capstone/blob/master/github-images/Investment%20Simulator%20Node%20Capstone%20-%20Login%20Page.png)
 User Dashboard | Add Portfolio page
-![User Dashboard](https://github.com/investment-simulator-full-stack-capstone/github-images/Investment Simulator Node Capstone - Dashboard.png) | ![Add portfolio page](https://github.com/investment-simulator-full-stack-capstone/github-images/Investment Simulator Node Capstone - Add Portfolio Page.png)
+![User Dashboard](https://github.com/calorab/investment-simulator-full-stack-capstone/blob/master/github-images/Investment%20Simulator%20Node%20Capstone%20-%20Dashboard.png) | ![Add portfolio page](https://github.com/calorab/investment-simulator-full-stack-capstone/blob/master/github-images/Investment%20Simulator%20Node%20Capstone%20-%20Add%20Portfolio%20Page.png)
 
 
 ## User Cases

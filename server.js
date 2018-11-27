@@ -329,8 +329,6 @@ app.post('/investment/create', (req, res) => {
     let investmentSymbol = req.body.investmentSymbol;
     let portfolioId = req.body.portfolioId;
 
-
-
     console.log(investmentSymbol);
 
     //external api function call and response

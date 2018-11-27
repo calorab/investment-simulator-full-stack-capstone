@@ -25,7 +25,7 @@ chai.use(chaiHttp);
 // Create user to seed db and test create user
 function generateUser() {
     return {
-        email: faker.internet.email(),
+        username: faker.internet.email(),
         password: faker.internet.password()
     }
 }
@@ -53,6 +53,18 @@ function generatePortfolioData() {
     }
 }
 
+function generateInvestmentData() {
+
+
+    return {
+        investmentSymbol: 'AAPL',
+        portfolioId: '5be23cb71eb528683f98ac21',
+        investmentPrice: '1038.69',
+        investmentChange: '0.25',
+        dateAndTime: '2018-11-14T13:28:45-06:00'
+    }
+}
+
 // Seed portfolio Data
 function seedPortfolioData() {
     console.info('Seeding portfolio data');
@@ -61,7 +73,7 @@ function seedPortfolioData() {
     for (let i = 1; i <= 10; i++) {
         seedData.push(generatePortfolioData());
     }
-    console.log(seedData);
+    //    console.log(seedData);
 
 
     return Portfolio.insertMany(seedData);
@@ -102,8 +114,8 @@ describe('User API resource', function () {
             .then(function (res) {
                 res.should.have.status(200);
                 res.should.be.json;
-                res.body.should.include.keys('email', 'password');
-                res.body.email.should.equal(newUser.email);
+                res.body.should.include.keys('username', 'password');
+                res.body.username.should.equal(newUser.username);
                 res.body.password.should.not.equal(newUser.password);
                 res.body._id.should.not.be.null;
             });
@@ -143,7 +155,7 @@ describe('Portfolio API resource', function () {
             .post('/portfolio/create')
             .send(newPortfolio)
             .then(function (res) {
-                console.log(res);
+                //                console.log(res);
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.include.keys(
@@ -156,23 +168,22 @@ describe('Portfolio API resource', function () {
     });
 
     //CALEB  example delete !!!
-    describe('DELETE endpoint', function () {
-        it('should delete an portfolio by ID', function () {
-            let portfolio;
-            return Portfolio
-                .findOne()
-                .then(function (_portfolio) {
-                    portfolio = _portfolio;
-                    return chai.request(app).delete(`/portfolio/${portfolio.id}`);
-                })
-                .then(function (res) {
-                    res.should.have.status(204);
-                    return Portfolio.findById(portfolio._id)
-                })
-                .then(function (_portfolio) {
-                    should.not.exist(_portfolio);
-                });
-        });
+
+    it('should delete an portfolio by ID', function () {
+        let portfolio;
+        return Portfolio
+            .findOne()
+            .then(function (_portfolio) {
+                portfolio = _portfolio;
+                return chai.request(app).delete(`/portfolio/${portfolio.id}`);
+            })
+            .then(function (res) {
+                res.should.have.status(204);
+                return Portfolio.findById(portfolio._id)
+            })
+            .then(function (_portfolio) {
+                should.not.exist(_portfolio);
+            });
     });
 
     afterEach(function () {
@@ -203,47 +214,42 @@ describe('Investment API resource', function () {
 
     // Test create a new portfolio
     it('should create a new Investment', function () {
-        const newInvestment = generatePortfolioData();
+        const newInvestment = generateInvestmentData();
         return chai.request(app)
             .post('/investment/create')
             .send(newInvestment)
             .then(function (res) {
-                console.log(res);
+                //                console.log(res);
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.include.keys(
                     'investmentSymbol',
                     'portfolioId',
-                    'userName',
-                    'userId');
-                //                res.body.loggedInUserId.should.equal(newPortfolio.loggedInUserId);
-                //                res.body.portfolioDate.should.equal(newPortfolio.portfolioDate);
-                //                res.body.portfolioDateUnix.should.equal(newPortfolio.portfolioDateUnix);
-                //                res.body.portfolioTime.should.equal(newPortfolio.portfolioTime);
-                //                res.body.portfolioType.should.equal(newPortfolio.portfolioType);
-                //                res.body.journalEntry.should.equal(newPortfolio.journalEntry);
+                    'investmentPrice',
+                    'investmentChange',
+                    'dateAndTime');
                 res.body._id.should.not.be.null;
             });
     });
 
     //CALEB  example delete !!!
-    describe('DELETE investment endpoint', function () {
-        it('should delete an investment by ID', function () {
-            let investment;
-            return Investment
-                .findOne()
-                .then(function (_investment) {
-                    investment = _investment;
-                    return chai.request(app).delete(`/investment/${investment.id}`);
-                })
-                .then(function (res) {
-                    res.should.have.status(204);
-                    return Investment.findById(investment._id)
-                })
-                .then(function (_investment) {
-                    should.not.exist(_investment);
-                });
-        });
+
+    it('should delete an investment by ID', function () {
+        let investment;
+        return Investment
+            .findOne()
+            .then(function (_investment) {
+                console.log(_investment);
+                investment = _investment;
+                return chai.request(app).delete(`/investment/${_investment._id}`);
+            })
+            .then(function (res) {
+                res.should.have.status(204);
+                return Investment.findById(investment._id)
+            })
+            .then(function (_investment) {
+                should.not.exist(_investment);
+            });
     });
 
     afterEach(function () {
