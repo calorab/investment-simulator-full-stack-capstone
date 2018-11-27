@@ -409,7 +409,7 @@ $(document).on("click", '.createNewInvestment', function (event) {
     //if the input is valid
     else {
         createInvestment(investmentSymbol, portfolioId);
-        document.getElementById(".stockSearch").reset();
+        $(".createNewInvestment").trigger("reset");
     };
 });
 
