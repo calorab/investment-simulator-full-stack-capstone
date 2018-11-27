@@ -274,7 +274,7 @@ $('.createAccountForm').submit(event => {
                 hidePages();
                 $('#userDashboard').show();
                 //CALEB 11/27 noon
-                getCardsByUser(result._id);
+                getCardsByUser();
                 getInvestmentsBySymbol(symbol);
             })
             //if the call is failing
