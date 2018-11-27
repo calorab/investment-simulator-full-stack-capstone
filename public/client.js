@@ -241,7 +241,7 @@ $('.createAccountForm').submit(event => {
     const username = $("#createUsername").val();
     const password = $("#createPassword").val();
     const symbol = $(this).parent().find(".stockSearch").val();
-    const loggedInUserId = $("#loggedInUserId").val();
+    //    const loggedInUserId = $("#loggedInUserId").val();
 
     console.log(loggedInUserId);
     //validate the input
@@ -274,7 +274,7 @@ $('.createAccountForm').submit(event => {
                 hidePages();
                 $('#userDashboard').show();
                 //CALEB 11/27 noon
-                getCardsByUser(loggedInUserId);
+                getCardsByUser(result._id);
                 getInvestmentsBySymbol(symbol);
             })
             //if the call is failing
