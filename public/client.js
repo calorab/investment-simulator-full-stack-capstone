@@ -243,6 +243,7 @@ $('.createAccountForm').submit(event => {
     const symbol = $(this).parent().find(".stockSearch").val();
     const loggedInUserId = $("#loggedInUserId").val();
 
+    console.log(loggedInUserId);
     //validate the input
     if (username == "") {
         alert('Please add an user name');
@@ -272,6 +273,7 @@ $('.createAccountForm').submit(event => {
                 alert('You have successfully created a new account');
                 hidePages();
                 $('#userDashboard').show();
+            //CALEB 11/27 noon
                 getCardsByUser(loggedInUserId);
                 getInvestmentsBySymbol(symbol);
             })
