@@ -274,7 +274,7 @@ $('.createAccountForm').submit(event => {
                 hidePages();
                 $('#userDashboard').show();
                 //CALEB 11/27 1:33
-                getCardsByUser(result._id);
+                getCardsByUser(loggedInUserId);
                 getInvestmentsBySymbol(symbol);
             })
             //if the call is failing
@@ -382,7 +382,7 @@ $('.addPortfolioForm').submit(event => {
                 alert('You have successfully added a new portfolio');
                 $('#userDashboard').show();
                 $('#addPortfolio').hide();
-                getCardsByUser(result._id);
+                getCardsByUser(result.userId);
                 $('.portfolioTitleValue').val(result.title);
             })
             //if the call is failing
