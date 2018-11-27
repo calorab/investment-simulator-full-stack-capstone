@@ -240,8 +240,8 @@ $('.createAccountForm').submit(event => {
     //take the input from the user
     const username = $("#createUsername").val();
     const password = $("#createPassword").val();
-    //    const symbol = $(".stockSearch").val();
     const symbol = $(this).parent().find(".stockSearch").val();
+    const loggedInUserId = $("#loggedInUserId").val();
 
     //validate the input
     if (username == "") {
@@ -272,7 +272,7 @@ $('.createAccountForm').submit(event => {
                 alert('You have successfully created a new account');
                 hidePages();
                 $('#userDashboard').show();
-                getCardsByUser(result._id);
+                getCardsByUser(loggedInUserId);
                 getInvestmentsBySymbol(symbol);
             })
             //if the call is failing
@@ -322,7 +322,6 @@ $('.loginForm').submit(event => {
                 $('#loginPage').hide();
                 $('#loggedInUserName').val(result.username);
                 $('#loggedInUserId').val(result._id);
-                getCardsByUser(result._id);
                 getInvestmentsBySymbol(symbol);
 
             })
