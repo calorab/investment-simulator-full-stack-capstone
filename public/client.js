@@ -272,6 +272,7 @@ $('.createAccountForm').submit(event => {
                 alert('You have successfully created a new account');
                 hidePages();
                 $('#userDashboard').show();
+                getCardsByUser(result._id);
                 getInvestmentsBySymbol(symbol);
             })
             //if the call is failing
