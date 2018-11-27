@@ -273,7 +273,7 @@ $('.createAccountForm').submit(event => {
                 alert('You have successfully created a new account');
                 hidePages();
                 $('#userDashboard').show();
-            //CALEB 11/27 noon
+                //CALEB 11/27 noon
                 getCardsByUser(loggedInUserId);
                 getInvestmentsBySymbol(symbol);
             })
@@ -307,7 +307,6 @@ $('.loginForm').submit(event => {
             username: username,
             password: password
         };
-        console.log(loginUserObject);
 
         //make the api call using the payload above
         $.ajax({
@@ -324,6 +323,7 @@ $('.loginForm').submit(event => {
                 $('#loginPage').hide();
                 $('#loggedInUserName').val(result.username);
                 $('#loggedInUserId').val(result._id);
+                getCardsByUser(result._id);
                 getInvestmentsBySymbol(symbol);
 
             })
