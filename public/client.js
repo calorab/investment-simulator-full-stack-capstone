@@ -256,7 +256,6 @@ $('.createAccountForm').submit(event => {
             username: username,
             password: password
         };
-        console.log(newUserObject);
 
         //make the api call using the payload above
         $.ajax({
@@ -271,6 +270,7 @@ $('.createAccountForm').submit(event => {
                 console.log(result);
                 $('#loggedInUserName').val(result.username);
                 alert('You have successfully created a new account');
+                hidePages();
                 $('#userDashboard').show();
                 getInvestmentsBySymbol(symbol);
             })
