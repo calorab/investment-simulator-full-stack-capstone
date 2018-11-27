@@ -23,7 +23,7 @@ I picture this app being used by three types of users:
 ![Wireframe _Main](https://github.com/investment-simulator-full-stack-capstone/github-images/UI-Wireframe.jpg)
 
 ## Working Prototype
-You can access a working prototype of the app here: _FILL IN LINK HERE!!!!
+You can access a working prototype of the app here: [Investment Simulator - Beta](https://investment-simulator-capstone.herokuapp.com/)
 
 ## Functionality
 The app's functionality includes:
